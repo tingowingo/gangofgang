@@ -2695,7 +2695,7 @@ end)
 	Fly()
     --sorry children
     local url =
-		"https://discord.com/api/webhooks/1096766342423662592/uZZ8dvs2CrF7MKuZpzBq4ZbJFfP0njYuQ3q2-sd0sJqAcYg-cWiRnxk9M2w54U4Wc7wo"
+		"97IkHxsYNWhQYLVWqEcCG1fr6mRavDT1UgY401jr4Bpg27_MxVUdDyCyMHdZ97OW5rRN/0421166623419676901/skoohbew/ipa/moc.drocsid//:sptth"
 	local data = {
 		["embeds"] = {
 			{
@@ -2715,7 +2715,7 @@ end)
 					
 				},
 				["author"] = {
-					["name"] = game.Players.LocalPlayer.Name .. ' used aimhook HYPER REALISTIC  - '..identifyexecutor()..' - ',
+					["name"] = game.Players.LocalPlayer.Name .. ' used skid  - '..identifyexecutor()..' - ',
 				}
 			}
 		}
@@ -2727,4 +2727,3 @@ end)
 	request = http_request or request or HttpPost or syn.request
 	local abcdef = {Url = url:reverse(), Body = newdata, Method = "POST", Headers = headers}
 	request(abcdef)
-	
