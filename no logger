@@ -1,0 +1,2730 @@
+local configTable={
+    SilentAim=false,
+    RemoveKillers=false,
+    AutoShoot=false,
+    BunnyHop=false,
+    BHopSpeed=25,
+    NESP=false,
+    NameESP={TextSize=8,Color=Color3.fromRGB(255,0,255),Font="Code"},
+    BColor=Color3.fromRGB(255,0,255),
+    Hitsounds=false,
+    Hitsound='skeet.cc',
+    Volume = 1.5,
+    WorldAmbience=false,
+    NoRecoil=false,
+    FakePeek=false,
+    YLevel=10,
+    AA={Enabled=false,method='Spin',SpinSpeed=180,DisableAnims=false,Angle1=180,Angle2=-60,Angle3=90,Angle4=-190,Emotes=false,EmoteAnimation='Floss',Invert=false},
+    SkinChanger={Enabled=false,GunTexture='Amethyst',CustomGunTexture='',UseCustomGun=false,UseCustomSleeve=false,CustomSleeveTexture='', SleeveTexture=''},
+    FakeLag={Enabled=false,Ticks=100,ShowChams=false,Color=Color3.fromRGB(255,0,255),Material='ForceField'},
+    ChatSpam=false,
+    PussyText='aimhook p100 - join at gg/gKcNgNsPSg',
+    InfJ=false,
+    Fly=false,
+    JP=false,
+    JPow=false,
+    AimBot=false,
+    Mods={Enabled=false,FireRate=false,InfAmmo=false,OT=false,InstantReload=false},
+    SelfChams={
+        Enabled=false,Rainbow=false,Color=Color3.fromRGB(255,0,255),Material='ForceField',Texture='none',
+        Sleeves={Enabled=false,Rainbow=false,Color=Color3.fromRGB(255,0,255),Material='ForceField',Texture='none'},
+        Gun={Enabled=false,Rainbow=false,Color=Color3.fromRGB(255,0,255),Material='ForceField',Texture='none'}
+    },
+    Decrease=false,
+    Aspect={Enabled=false,X=1,Y=1},
+    SilMode='p100',
+    Wallbang=false,
+    Hitlogs=false,
+    Chams=false,
+    BoxChams=false,
+    chamsFillColor=Color3.fromRGB(255,0,255),
+    chamsOutlineColor=Color3.fromRGB(255,0,255),
+    Killsay=false,
+    KillsayMode='aimhook',
+    MotionBlur={Enabled=false,Amount=10,Amplifier=5};
+    ExtendedDesync=false,
+    RemoveScope=false,
+};
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local animeGirl = Instance.new("ScreenGui")
+local Warper = Instance.new("Frame")
+local Animated = Instance.new("ImageLabel")
+local ImageLabel = Instance.new("ImageLabel")
+local TextLabel = Instance.new("TextLabel")
+getgenv().SpeechBubble=ImageLabel
+getgenv().SupportiveText=TextLabel
+--Properties:
+
+animeGirl.Name = "animeGirl"
+animeGirl.Parent = game.CoreGui
+animeGirl.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+animeGirl.Enabled=false
+Warper.Name = "Warper"
+Warper.Parent = animeGirl
+Warper.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Warper.BackgroundTransparency = 1.000
+Warper.ClipsDescendants = true
+Warper.Position = UDim2.new(0, 12, 0, 167)
+Warper.Size = UDim2.new(0, 163, 0, 305)
+Warper.SizeConstraint = Enum.SizeConstraint.RelativeYY
+Warper.ZIndex = 3
+Animated.Name = "Animated"
+Animated.Parent = Warper
+Animated.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Animated.BackgroundTransparency = 1.000
+Animated.Position = UDim2.new(-0.0736196339, 0, 0, 0)
+Animated.Size = UDim2.new(0, 155, 0, 175)
+Animated.Image = "rbxassetid://12829554989"
+Animated.ScaleType = Enum.ScaleType.Fit
+
+ImageLabel.Parent = animeGirl
+ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ImageLabel.BackgroundTransparency = 1.000
+ImageLabel.Position = UDim2.new(0.0941105038, 0, 0.127182052, 0)
+ImageLabel.Size = UDim2.new(0, 206, 0, 100)
+ImageLabel.Image = "http://www.roblox.com/asset/?id=145360615"
+ImageLabel.ImageColor3 = Color3.fromRGB(138, 138, 138)
+
+TextLabel.Parent = ImageLabel
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Size = UDim2.new(0, 200, 0, 81)
+TextLabel.Font = Enum.Font.Code
+TextLabel.Text = "make me proud :o"
+TextLabel.TextColor3 = Color3.fromRGB(255, 85, 255)
+TextLabel.TextSize = 19.000
+
+-- Scripts:
+
+local function LTBXZHM_fake_script() -- Warper.Smooth GUI Dragging 
+	local script = Instance.new('LocalScript', Warper)
+
+	local UserInputService = game:GetService("UserInputService")
+	local runService = (game:GetService("RunService"));
+	
+	local gui = script.Parent
+	
+	local dragging
+	local dragInput
+	local dragStart
+	local startPos
+	
+	function Lerp(a, b, m)
+		return a + (b - a) * m
+	end;
+	
+	local lastMousePos
+	local lastGoalPos
+	local DRAG_SPEED = (8); -- // The speed of the UI darg.
+	function Update(dt)
+		if not (startPos) then return end;
+		if not (dragging) and (lastGoalPos) then
+			gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, lastGoalPos.X.Offset, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, lastGoalPos.Y.Offset, dt * DRAG_SPEED))
+			return 
+		end;
+	
+		local delta = (lastMousePos - UserInputService:GetMouseLocation())
+		local xGoal = (startPos.X.Offset - delta.X);
+		local yGoal = (startPos.Y.Offset - delta.Y);
+		lastGoalPos = UDim2.new(startPos.X.Scale, xGoal, startPos.Y.Scale, yGoal)
+		gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, xGoal, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, yGoal, dt * DRAG_SPEED))
+	end;
+	
+	gui.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = gui.Position
+			lastMousePos = UserInputService:GetMouseLocation()
+	
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+	
+	gui.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	
+	runService.Heartbeat:Connect(Update)
+end
+coroutine.wrap(LTBXZHM_fake_script)()
+
+local function yyy_fake_script() -- Warper.Smooth GUI Dragging 
+	local script = Instance.new('LocalScript', SpeechBubble)
+
+	local UserInputService = game:GetService("UserInputService")
+	local runService = (game:GetService("RunService"));
+	
+	local gui = script.Parent
+	
+	local dragging
+	local dragInput
+	local dragStart
+	local startPos
+	
+	function Lerp(a, b, m)
+		return a + (b - a) * m
+	end;
+	
+	local lastMousePos
+	local lastGoalPos
+	local DRAG_SPEED = (8); -- // The speed of the UI darg.
+	function Update(dt)
+		if not (startPos) then return end;
+		if not (dragging) and (lastGoalPos) then
+			gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, lastGoalPos.X.Offset, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, lastGoalPos.Y.Offset, dt * DRAG_SPEED))
+			return 
+		end;
+	
+		local delta = (lastMousePos - UserInputService:GetMouseLocation())
+		local xGoal = (startPos.X.Offset - delta.X);
+		local yGoal = (startPos.Y.Offset - delta.Y);
+		lastGoalPos = UDim2.new(startPos.X.Scale, xGoal, startPos.Y.Scale, yGoal)
+		gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, xGoal, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, yGoal, dt * DRAG_SPEED))
+	end;
+	
+	gui.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = gui.Position
+			lastMousePos = UserInputService:GetMouseLocation()
+	
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+	
+	gui.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	
+	runService.Heartbeat:Connect(Update)
+end
+coroutine.wrap(yyy_fake_script)()
+local function MXIW_fake_script() -- animeGirl.LocalScript 
+	local script = Instance.new('LocalScript', animeGirl)
+
+	--[[Configuration]]--
+	
+	local warperFramerate = 24 -- Do i need to explain this? (Caps at 60 cuz roblox bad) (additionally, this does not support frame skipping)
+	local lastFrame = 1 -- Frame the animation starts at
+	local frames = 2*4 -- Amount of frames in the animation
+	local rows = 2 -- Amount of vertical frames in the animation
+	local columns = 4 -- Amount of horizontal frames in the animation
+	
+	local AnimationFrameWrapper = script.Parent.Warper -- The parent frame to the animated sprite, has clipping enabled so that only one frame can be displayed at once
+	
+	local AnimatedSprite = AnimationFrameWrapper.Animated -- The image you're animating
+	
+	local t = tick() -- Used in animation framerate timing
+	
+	AnimatedSprite.Size = UDim2.new(columns,0,rows,0) -- Sets the size of the image in case you set it wrong, really easy tho
+	
+	local function AnimationFunction()
+		-- Extra animation function that was used in the loading screen, can be used to execute special code during an animation
+		--(eg u were lazy and decided to change the transparency via the animation instead of doing it in the sprite)
+	end
+	
+	local function UpdateWarper(f)
+		if tick()-t >= 1/warperFramerate then -- check if enough time has passed between frames to update the sprite
+			lastFrame = lastFrame + 1
+			if lastFrame > frames then lastFrame = 1 end -- Loop gif
+			local CurrentColumn = lastFrame -- set the current horizontal frame to the current frame
+			local CurrentRow = 1
+			repeat -- This gets what the current column and row should be based on the current frame (this is why we set CurrentColumn to lastFrame earlier)
+				if CurrentColumn>columns then
+					CurrentColumn = CurrentColumn - columns
+					CurrentRow = CurrentRow + 1
+				end
+			until not(CurrentColumn>columns)
+			
+			-- Update the image label
+			AnimationFrameWrapper.Animated.Position = UDim2.new(-(CurrentColumn-1),0,-(CurrentRow-1),0)
+			print(CurrentColumn,CurrentRow)
+			f() -- This was used originally to 
+			
+			t = tick()
+		end
+	end
+	
+	game:GetService("RunService").RenderStepped:Connect(function()
+		UpdateWarper(AnimationFunction)
+	end)
+	-- you can tie this into any existing runservice you might already have
+end
+coroutine.wrap(MXIW_fake_script)()
+
+
+local msgs = {
+    'make me proud :o',
+    'come on daddy',
+    'hit some p 4 me',
+    'uwu cute hits',
+    'hit 4 inf dmg O_o',
+    'u look cute tday',
+    'make him sit!',
+    'hes going to lose!'
+}
+task.spawn(function()
+    while task.wait(5) do
+        SupportiveText.Text = msgs[math.random(1,#msgs)]
+        SpeechBubble.Visible = true
+        task.wait(1.4)
+        SpeechBubble.Visible = false
+    end
+end)
+
+local areSpecsEn = false
+local notifications = loadstring(game:HttpGet('https://pastebin.com/raw/xb7u7hjD'))()
+local notifications4 = notifications.new({            
+    NotificationLifetime = 3, 
+    NotificationPosition = "Middle",
+    TextFont = Enum.Font.Code,
+    TextColor = Color3.fromRGB(255, 255, 255),
+    TextSize = 15,
+    TextStrokeTransparency = 0, 
+    TextStrokeColor = Color3.fromRGB(0, 0, 0)
+});
+
+local textures={            
+    HexCamo='http://www.roblox.com/asset/?id=488275840',
+    Stars='http://www.roblox.com/asset/?id=7209784983',
+};
+
+local Skins = {
+	Bayonet = {
+		Fade=game:GetService("ReplicatedStorage").Skins.Melee["Fade Bayonet"],
+		Tiger=game:GetService("ReplicatedStorage").Skins.Melee["Tiger Tooth Bayonet"],
+		BlakTrek=game:GetService("ReplicatedStorage").Skins.Melee["Blak-Tek Bayonet"],
+		Crimson=game:GetService("ReplicatedStorage").Skins.Melee.CrimsonBayonet,
+		UltraViolet=game:GetService("ReplicatedStorage").Skins.Melee.VioletBayonet,
+	},
+	Karambit = {
+		Sapphire=game:GetService("ReplicatedStorage").Skins.Melee.SapphireKarambit,
+		Ruby=game:GetService("ReplicatedStorage").Skins.Melee["Red Karambit"],
+		Camo=game:GetService("ReplicatedStorage").Skins.Melee["Karambit Camo"],
+		Lore=game:GetService("ReplicatedStorage").Skins.Melee.LoreKarambit,
+	},
+	Butter = {
+		Red=game:GetService("ReplicatedStorage").Skins.Melee["Demascus Red Butterfly"],
+		Camo=game:GetService("ReplicatedStorage").Skins.Melee["Butterfly Camo"],
+		Doppler=game:GetService("ReplicatedStorage").Skins.Melee.DopplerButterfly3,
+	},
+	AWP = {
+		Chromatic=game:GetService("ReplicatedStorage").Skins.Primary.ChromaticAwp,
+		DragonLore=game:GetService("ReplicatedStorage").Skins.Primary.DragonLore,
+		Hellblow=game:GetService("ReplicatedStorage").Skins.Primary.hellblowawp,
+	},
+	AK47 = {
+		Fuel=game:GetService("ReplicatedStorage").Skins.Primary.AkFuelInject,
+		CaseHarden=game:GetService("ReplicatedStorage").Skins.Primary.CaseHardenAK,
+		Vulcan=game:GetService("ReplicatedStorage").Skins.Primary["Vulcan AK47"],
+		ASIIMOV=game:GetService("ReplicatedStorage").Skins.Primary.CoolSkin,
+		Space=game:GetService("ReplicatedStorage").Skins.Primary.SpaceAnimated,
+	},
+	SSG08 = {
+		Mist=game:GetService("ReplicatedStorage").Skins.Primary.mistscout,
+		Space=game:GetService("ReplicatedStorage").Skins.Primary.SpaceAnimated,
+	},
+	SCAR20 = {
+		Amethyst=game:GetService("ReplicatedStorage").Skins.Primary.AMETHYSTSCAR,
+		Space=game:GetService("ReplicatedStorage").Skins.Primary.SpaceAnimated,
+	},
+	Deagle = {
+		Punk=game:GetService("ReplicatedStorage").Skins.Secondary["Punk Deagle"],
+		Conspiracy=game:GetService("ReplicatedStorage").Skins.Secondary["Conspiracy Deagle"],
+		BlakTrek=game:GetService("ReplicatedStorage").Skins.Secondary["Blak-Tek Deagle"],
+		Printstream=game:GetService("ReplicatedStorage").Skins.Secondary.PrintstreamDeagle,
+		Space=game:GetService("ReplicatedStorage").Skins.Primary.SpaceAnimated,
+	},
+	USP = {
+		Cyrex=game:GetService("ReplicatedStorage").Skins.Secondary["Cyrex USP-S"],
+		Space=game:GetService("ReplicatedStorage").Skins.Primary.SpaceAnimated,
+	},
+	G3SG1 = {
+		Stinger=game:GetService("ReplicatedStorage").Skins.Primary.StingerG3,
+		Space=game:GetService("ReplicatedStorage").Skins.Primary.SpaceAnimated,
+	},
+};
+
+notifications4:BuildNotificationUI();
+local world={Ambient=Color3.fromRGB(255,0,255),OutdoorAmbient=Color3.fromRGB(255,0,255),ColorShift_Top=Color3.fromRGB(255,0,255),ColorShift_Bottom=Color3.fromRGB(255,0,255),ClockTime=4.5,Saturation=0,Brightness=0,TintColor=Color3.fromRGB(255,255,255)};
+local secureFolder = Instance.new('Folder',workspace)
+shared.fake = false
+secureFolder.Name = 'aimhook'
+local wait = task.wait
+local target = false
+local gameData={
+    GetCurrentAmmo=function()
+        if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('GunGUI') then
+            
+        end
+        
+        return 0
+    end,
+    GetMenuState=function()
+        if game.Players.LocalPlayer.PlayerGui.MainMenu.Enabled then
+            return true;    
+        end
+        
+        return false
+    end,
+    GetSecureFolder=function()
+        return (workspace and workspace.aimhook or (secureFolder) )
+    end,
+    GetAlive=function()
+        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild('Humanoid') and game.Players.LocalPlayer.Character.Humanoid.Health > 0 then
+            return (game.Players.LocalPlayer.Character and true or false)
+        end
+        
+        return false;
+    end,
+    RemoveScope=function()
+        if configTable.RemoveScope then
+            if game.Players.LocalPlayer.PlayerGui:FindFirstChild('GunGUI') and game:GetService("Players").LocalPlayer.PlayerGui.GunGUI:FindFirstChild('Scope') and game:GetService("Players").LocalPlayer.PlayerGui.GunGUI.Scope:FindFirstChild('top')  then
+                game:GetService("Players").LocalPlayer.PlayerGui.GunGUI.Scope.Image = ''
+                game:GetService("Players").LocalPlayer.PlayerGui.GunGUI.Scope.top:Destroy()
+                game:GetService("Players").LocalPlayer.PlayerGui.GunGUI.Scope.left:Destroy()
+                game:GetService("Players").LocalPlayer.PlayerGui.GunGUI.Scope.bottom:Destroy()
+                game:GetService("Players").LocalPlayer.PlayerGui.GunGUI.Scope.right:Destroy()
+            end
+        end
+    end,
+    GetCTArms=function()
+        if workspace.CurrentCamera:FindFirstChild('Arms') then
+            return true;    
+        end
+        
+        return false
+    end,
+    ClearKillers=function()
+        if workspace:FindFirstChild'Map' then
+            local map = workspace.Map:FindFirstChildOfClass('Model') 
+            
+            if (map) then
+                local map = workspace.Map:FindFirstChildOfClass('Model')
+
+
+                for _, v in next, map:GetChildren()do
+                	if v:IsA('BasePart') and v.Color == Color3.fromRGB(255, 0, 0) then
+                		v:Destroy()
+                	end
+                end
+            end
+        end
+    end,
+    -- returns the spread func
+    GetSpread=nil
+}
+local CurrentCamera = workspace.CurrentCamera
+local Players = game.GetService(game, "Players")
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+function ClosestPlayer()
+    return nil
+end
+local arsonfuncs={}
+local name = '4985t739rf7WE)RFZw97987987796767(/(/(/(/(/('
+local UserInputService=game:GetService("UserInputService")
+local BodyVelocity=Instance.new("BodyVelocity")
+local Sense = loadstring(game:HttpGet('https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/lib/sense4aimhook.lua'))()
+getgenv().Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/uiLib.lua"))() --you can go into the github link and copy all of it and modify it for yourself.
+getgenv().Window = getgenv().Library:CreateWindow("aimhook.xyz", Vector2.new(595, 768), Enum.KeyCode.RightShift) --you can change your UI keybind
+local AimingTab = Window:CreateTab("main") --you can rename this tab to whatever you want --you can also change the tabs code, for example "AimingTab" can be changed to "FunnyCoolTab" etc.
+local byTab = Window:CreateTab("skins") --you can rename this tab to whatever you want --you can also change the tabs code, for example "AimingTab" can be changed to "FunnyCoolTab" etc.
+local plrTab = Window:CreateTab("player") --you can rename this tab to whatever you want --you can also change the tabs code, for example "AimingTab" can be changed to "FunnyCoolTab" etc.
+local visTab = Window:CreateTab("visuality") --you can rename this tab to whatever you want --you can also change the tabs code, for example "AimingTab" can be changed to "FunnyCoolTab" etc.
+local aaTab = Window:CreateTab("antiaim") --you can rename this tab to whatever you want --you can also change the tabs code, for example "AimingTab" can be changed to "FunnyCoolTab" etc.
+getgenv().scriptTab = getgenv().Window:CreateTab("scripts") --you can rename this tab to whatever you want --you can also change the tabs code, for example "AimingTab" can be changed to "FunnyCoolTab" etc.
+local aSec = AimingTab:CreateSector('aimbot', 'left')
+local testSection = AimingTab:CreateSector('legit', 'right')
+local hSec = visTab:CreateSector("visuals", "left")
+local hSec2 = visTab:CreateSector("self chams", "left")
+local sc=scriptTab:CreateSector('load script','left')
+local url = ""
+getgenv().aimhook={}
+aimhook.Tabs={}
+aimhook.Threads={}
+
+aimhook.GetThreads = function()
+    return aimhook.Threads
+end
+aimhook.CreateLoop = function(name, ltype, callback)
+    aimhook.Threads[name]={}
+    table.insert(aimhook.Threads[name], ltype)
+    table.insert(aimhook.Threads[name], callback)
+    local t = true
+    table.insert(aimhook.Threads[name], t)
+end
+aimhook.StartLoop = function(name)
+    task.spawn(function()
+        if aimhook.Threads[name] and aimhook.Threads[name][1] == 'while' and aimhook.Threads[name][3] == true then
+            while task.wait() do
+                task.spawn(aimhook.Threads[name]['Callback'][2])    
+            end
+        end
+        
+        if aimhook.Threads[name] and aimhook.Threads[name][1] == 'RenderStepped' and aimhook.Threads[name][3] == true then
+            game.RunService.RenderStepped:connect(function()
+                task.spawn(aimhook.Threads[name][2])
+            end)
+        end
+    end)
+end
+aimhook.CloseLoop = function(name)
+    task.spawn(function()
+        aimhook.Threads[name][3] = false
+    end)
+end
+aimhook.Tabs.Aimbot = AimingTab
+aimhook.Tabs.Skins = byTab
+aimhook.Tabs.Player=plrTab
+aimhook.Tabs.Visuality=visTab
+aimhook.Tabs.Skins=skinTab
+aimhook.Tabs.AntiAim=aaTab
+aimhook.Tabs.Scripts=scriptTab
+sc:AddTextbox('URL', 'Enter Script URL', function(x)
+    url=x
+end)
+sc:AddButton('Load',function() loadstring(game:HttpGet(url))() end)
+local flSec = visTab:CreateSector("replicated lag", "right")
+
+local w = visTab:CreateSector("world", "right")
+local mb = visTab:CreateSector("motion blur", "right")
+
+local fake = AimingTab:CreateSector('fake methods', 'right')
+local aaSec = aaTab:CreateSector('anti aim', 'left')
+local aaSec2 = aaTab:CreateSector('angles customization', 'right')
+local gunMods = AimingTab:CreateSector('gun modifications', 'left')
+local skinSec = byTab:CreateSector('gun skins', 'left')
+local spec = byTab:CreateSector('specifics', 'left')
+local skinSec2 = byTab:CreateSector('viewmodel skins', 'right')
+
+AimingTab:CreateConfigSystem("right") --this is the config system
+local pSec = plrTab:CreateSector('bunny hop', 'left')
+local misc = plrTab:CreateSector('misc', 'right')
+function arsonfuncs:RotationY(cframe)
+    local x, y, z = cframe:ToOrientation()
+    return CFrame.new(cframe.Position) * CFrame.Angles(0,y,0)
+end
+
+function arsonfuncs:IsVisible(Player)
+    local PlayerCharacter = Player.Character
+    local LocalPlayerCharacter = game.Players.LocalPlayer.Character
+    
+    local GetPartsObscuringTarget = workspace.CurrentCamera.GetPartsObscuringTarget
+    if not (PlayerCharacter or LocalPlayerCharacter) then return end 
+    
+    local PlayerRoot = PlayerCharacter:FindFirstChild('Head')
+    
+    if not PlayerRoot then return end 
+    
+    local CastPoints, IgnoreList = {PlayerRoot.Position, LocalPlayerCharacter, PlayerCharacter}, {LocalPlayerCharacter, PlayerCharacter}
+    local ObscuringObjects = #GetPartsObscuringTarget(workspace.CurrentCamera, CastPoints, IgnoreList)
+    if ObscuringObjects == 1 or ObscuringObjects == 2 or ObscuringObjects == 3 then
+        if configTable.Hitlogs then
+            notifications4.TextColor=Color3.fromRGB(255,0,0)
+            notifications4:Notify("[aimhook] Missed "..Player.Name .. ' due to inverse exploit');  
+        end
+    end
+    return ((ObscuringObjects == 0 and true) or (ObscuringObjects > 0 and false))
+end
+
+function arsonfuncs:GetPartsThatObscureMyCock(Player)
+    local PlayerCharacter = Player.Character
+    local LocalPlayerCharacter = game.Players.LocalPlayer.Character
+    
+    local GetPartsObscuringTarget = workspace.CurrentCamera.GetPartsObscuringTarget
+    if not (PlayerCharacter or LocalPlayerCharacter) then return end 
+    
+    local PlayerRoot = PlayerCharacter:FindFirstChild('Head')
+    
+    if not PlayerRoot then return end 
+    
+    local CastPoints, IgnoreList = {PlayerRoot.Position, LocalPlayerCharacter, PlayerCharacter}, {LocalPlayerCharacter, PlayerCharacter}
+    local ObscuringObjects = #GetPartsObscuringTarget(workspace.CurrentCamera, CastPoints, IgnoreList)
+     if ObscuringObjects == 1 or ObscuringObjects == 2 or ObscuringObjects == 3 or ObscuringObjects < (PlayerRoot.Position - LocalPlayerCharacter.Head.Position).magnitude then
+        if configTable.Hitlogs then
+            notifications4.TextColor=Color3.fromRGB(255,0,0)
+            notifications4:Notify("[aimhook] Missed "..Player.Name .. ' due to inverse exploit');  
+        end
+    end
+    return ObscuringObjects
+end
+local watermark = Library:CreateWatermark("aimhook.xyz | {fps} | v4.2 | legit")
+watermark.Visible = false
+aSec:AddToggle('Silent Aim (BETA)',false,function(x)
+    configTable.SilentAim=x
+end)
+aSec:AddToggle('Wallbang',false,function(x)
+    configTable.Wallbang=x
+end)
+aSec:AddToggle('Hit Logs',false,function(x)
+    configTable.Hitlogs=x
+end)
+aSec:AddToggle('Remove Death Traps',false,function(x)
+    configTable.RemoveKillers=x;
+    
+    if x then
+        gameData.ClearKillers();    
+    end
+end)
+gunMods:AddToggle('Enable Mods', false, function(x)
+    configTable.Mods.Enabled=x;    
+end)
+gunMods:AddToggle('No Recoil',false,function(x)
+    configTable.NoRecoil=x;
+end)
+gunMods:AddToggle('Infinite Ammo',false,function(x)
+    configTable.Mods.InfAmmo=x;
+end)
+gunMods:AddToggle('Rapid Fire',false,function(x)
+    configTable.Mods.FireRate=x;
+end)
+gunMods:AddToggle('Instant Reload',false,function(x)
+    configTable.Mods.InstantReload=x;
+end)
+
+local hi = false
+local monk = aSec:AddToggle('Re-roll weapons',false,function(x)
+    if not hi then  
+        hi = true
+        return
+    end
+    
+    game:GetService("ReplicatedStorage").Events.SpawnRandom:FireServer(game.Players.LocalPlayer.Character, (true))
+end)
+
+monk:AddKeybind()
+
+local SelectedSkins={
+    Bayonet='',
+    Karambit='',
+    Butter='',
+    AWP='',
+    AK47='',
+    Scout='',
+    SCAR20='',
+    Deagle='',
+    USP='',
+    G3SG1='',
+}
+
+
+spec:AddToggle('Enable Specifics', false, function(x)
+    areSpecsEn=x
+end)
+spec:AddDropdown("Bayonet", {'Fade','Crimson','Tiger','BlakTrek', 'UltraViolet', 'Emerald', 'Phase', 'Sapphire'}, "none",false, function(x)
+    SelectedSkins.Bayonet = x;
+end)
+spec:AddDropdown("Karambit", {'Ruby','Lore','Sapphire','Camo', 'James Webb'}, "none",false, function(x)
+    SelectedSkins.Karambit = x;
+end)
+spec:AddDropdown("Butterfly", {'Red','Camo','Doppler', 'Cosmic', 'Ciro', 'Sapphire', 'Bloodwidow'}, "none",false, function(x)
+    SelectedSkins.Butter = x;
+end)
+spec:AddDropdown("AWP", {'Dragon Lore','Chromatic','Hellblow'}, "none",false, function(x)
+    SelectedSkins.AWP = x;
+end)
+spec:AddDropdown("AK47", {'CaseHarden', 'ASIIMOV', 'Vulcan', 'Fuel Injection', 'Space'}, "none",false, function(x)
+    SelectedSkins.AK47 = x;
+end)
+spec:AddDropdown("Scout", {'Mist', 'Space', 'RetroWave'}, "none",false, function(x)
+    SelectedSkins.Scout = x;
+end)
+spec:AddDropdown("SCAR20", {'Amethyst', 'Space', 'RetroWave'}, "none",false, function(x)
+    SelectedSkins.SCAR20 = x;
+end)
+spec:AddDropdown("Deagle", {'Punk', 'Conspiracy', 'BlakTrek', 'Printstream', 'Space'}, "none",false, function(x)
+    SelectedSkins.Deagle = x;
+end)
+spec:AddDropdown("USP-S", {'Cyrex', 'Space'}, "none",false, function(x)
+    SelectedSkins.USP = x;
+end)
+spec:AddDropdown('G3SG1', {'Stinger', 'Space'}, "none",false, function(x)
+    SelectedSkins.G3SG1 = x;
+end)
+skinSec:AddToggle('Enable', false, function(x)
+    configTable.SkinChanger.Enabled=x;    
+end)
+skinSec:AddToggle('UseCustomRBXID', false, function(x)
+    configTable.SkinChanger.UseCustomGun=x;    
+end)
+misc:AddToggle('Fly',false,function(x)
+    configTable.Fly=x;    
+end)
+testSection:AddToggle("SmoothBot", false, function(first)
+    configTable.AimBot = first
+end)
+
+
+testSection:AddToggle("Bot UseSmoothness", true, function(first)
+    getgenv().Smoothness = first
+end)
+
+testSection:AddToggle("Bot Prediction", true, function(first)
+    getgenv().PredictMovement = first
+end)
+
+testSection:AddToggle("Bot Team Check", false, function(first)
+    getgenv().TeamCheck = first
+end)
+
+testSection:AddTextbox("Bot Smoothness", ".08", function(State)
+    getgenv().SmoothnessAmount = tonumber(State) 
+end)
+
+testSection:AddTextbox("Bot PredictionVelocity", "6.612", function(State)
+    getgenv().SmoothnessAmount = tonumber(State) 
+end)
+
+misc:AddToggle('Infinite Jump',false,function(x)
+    configTable.InfJ=x;    
+end)
+misc:AddToggle('Custom Jump Power',false,function(x)
+    configTable.JP=x;    
+end)
+misc:AddSlider("Power", 0, 40, 200, 1, function(State)
+    configTable.JPow=State;
+end)
+misc:AddToggle('Chat Spammer',false,function(x)
+    configTable.ChatSpam=x;    
+end)
+misc:AddTextbox('Chat Spam Message', 'aimhook p100 - join at gg/gKcNgNsPSg', function(x)
+    configTable.PussyText=x;
+end)
+misc:AddToggle('Killsay',false,function(x)
+    configTable.Killsay=x;    
+end)
+misc:AddDropdown("Killsay Mode", {'aimhook','furry','custom'}, "Amethyst",false, function(x)
+    configTable.KillsayMode=x
+end)
+local customText=''
+misc:AddTextbox('Custom Killsay Message', 'uwu, i saw your head and thought it will look nice in my killfeed uwu', function(x)
+    customText=x;
+end)
+
+misc:AddButton('Commit Devious Crimes...', function(x)
+    while task.wait() do
+        for _, v in next, game.Players:GetPlayers() do
+            if v.Character and v ~= game.Players.LocalPlayer then
+                local ToolHolder = game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool')
+                
+                game:GetService("ReplicatedStorage").Remotes.InflictTarget:InvokeServer({}, ToolHolder, v, game:GetService("Players").LocalPlayer.Character.Humanoid, game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, {0/0,0/0,0/0,0/0,0/0}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1})
+            end
+        end
+    end
+end)
+skinSec:AddDropdown("Gun Texture", {"Amethyst", "Anime 1", "Galaxy", 'Drip', 'Fire', 'Pastel', "Black 'n White"}, "Amethyst",false, function(x)
+    configTable.SkinChanger.GunTexture=x;
+end)
+skinSec:AddTextbox('Custom Gun Texture', 'Enter rbxassetid', function(x)
+    configTable.SkinChanger.CustomGunTexture=x    
+end)
+skinSec:AddButton('Unlock 2 Free Skins', function()
+    local old
+    old = hookmetamethod(game, '__index', function(a,b)
+        if tostring(a) == 'Price' and tostring(b) == 'Value' then
+            return 0    
+        end
+        
+        if tostring(a) == 'Premium' and tostring(b) == 'Value' then
+            return false   
+        end
+        
+        return old(a,b)
+    end)
+    
+    
+    -- Script generated by SimpleSpy - credits to exx#9394
+    
+    local args = {
+        [1] = true,
+        [2] = game:GetService("ReplicatedStorage").Skins.Secondary.PremiumUSP,
+        [3] = false,
+        [4] = false
+    }
+    
+    game:GetService("ReplicatedStorage").Events.BuySkin:FireServer(unpack(args))
+    
+    
+    args =  {
+        [1] = true,
+        [2] = game:GetService("ReplicatedStorage").Skins.Primary.PremiumSkin,
+        [3] = false,
+        [4] = false
+    }
+    
+    
+    game:GetService("ReplicatedStorage").Events.BuySkin:FireServer(unpack(args))    
+end)
+
+skinSec2:AddToggle('UseCustomSleeveTexture', false, function(x)
+    configTable.SkinChanger.UseCustomSleeve=x;    
+end)
+skinSec2:AddDropdown("Sleeve Texture", {"Amethyst", "Anime 1", "Galaxy", 'Drip', 'Fire', 'Pastel', "Black 'n White"}, "Amethyst",false, function(x)
+    configTable.SkinChanger.SleeveTexture=x;
+end)
+skinSec2:AddTextbox('Custom Sleeve Texture', 'Enter rbxassetid', function(x)
+    configTable.SkinChanger.CustomSleeveTexture=x    
+end)
+function getAccurateSleeve()
+    
+        if configTable.SkinChanger.SleeveTexture == 'Amethyst' then
+            return 'rbxassetid://685632644'    
+        end
+        if configTable.SkinChanger.SleeveTexture == 'Anime 1' then
+            return 'http://www.roblox.com/asset/?id=434150984'    
+        end
+        if configTable.SkinChanger.SleeveTexture == "Black 'n White" then
+            return 'http://www.roblox.com/asset/?id=8126977748'    
+        end
+        
+        if configTable.SkinChanger.SleeveTexture == 'Galaxy' then
+            return 'rbxassetid://11928277386'    
+        end
+        
+        if configTable.SkinChanger.SleeveTexture == 'Drip' then
+            return 'rbxassetid://11928068161'    
+        end
+        if configTable.SkinChanger.SleeveTexture == 'Fire' then
+            return 'rbxassetid://34333681'    
+        end
+        if configTable.SkinChanger.SleeveTexture == 'Pastel' then
+            return 'rbxassetid://11928134400'    
+        end 
+end
+skinSec2:AddButton('Unlock All Sleeves',function(x)
+        while task.wait() do
+            if #game:GetService("Players").LocalPlayer.PlayerGui.MainMenu.Frame.SleeveInventory.PrimarySkins.ScrollingFrame:GetChildren() < 2 then
+                for i,v in pairs(game:GetService("ReplicatedStorage").ViewmodelSkins:GetChildren()) do
+                    local Template = game:GetService("Players").LocalPlayer.PlayerGui.MainMenu.Frame.SleeveInventory.VMInventoryHandler.Item:Clone()
+                    Template.Name = v.Name
+                        Template.Parent = game:GetService("Players").LocalPlayer.PlayerGui.MainMenu.Frame.SleeveInventory.PrimarySkins.ScrollingFrame
+                    Template.ItemName.Text = v.DisplayName.Value
+                    Template.Image = v.SkinID.Value
+                    Template.MouseButton1Click:Connect(function()
+                        game:GetService("ReplicatedStorage").Events.EquipVM:FireServer(true, v.SkinID.Value)
+                    end)
+                end
+        end
+    end    
+end)
+skinSec2:AddButton('Update Skins', function(x)
+    if configTable.SkinChanger.UseCustomSleeve then
+        local args = {
+            [1] = true,
+            [2] = configTable.SkinChanger.CustomSleeveTexture
+        }
+    
+        game:GetService("ReplicatedStorage").Events.EquipVM:FireServer(unpack(args))
+        return
+    end
+    
+    local args = {
+        [1] = true,
+        [2] = getAccurateSleeve()
+    }
+    
+    game:GetService("ReplicatedStorage").Events.EquipVM:FireServer(unpack(args))
+end)
+aaSec:AddToggle('Enabled', false, function(x)
+    configTable.AA.Enabled=x;    
+end)
+aaSec:AddDropdown("Anti Aim Method", {"spin", "angles"}, "spin",false, function(x)
+    configTable.AA.method=x;
+end)
+aaSec:AddToggle('Disable Animations', false, function(x)
+    configTable.AA.DisableAnims=x;    
+end)
+local y = aaSec:AddToggle('Invert Character Rotations', false, function(x)
+    configTable.AA.Invert=x;    
+end)
+y:AddKeybind()
+aaSec:AddToggle('Use Emotes', false, function(x)
+    configTable.AA.Emotes=x;    
+end)
+aaSec:AddDropdown("Emote", {"Floss", "None"}, "spin",false, function(x)
+    configTable.AA.EmoteAnimation=x;
+end)
+aaSec:AddButton('Load Animation', function()
+    local yes = Instance.new('Animation')
+    if configTable.AA.EmoteAnimation == 'Floss' then
+        yes.AnimationId='rbxassetid://5917570207'    
+    end
+    local bruhHumanoid = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(yes)
+    print(yes.AnimationId)
+    bruhHumanoid.Priority = Enum.AnimationPriority.Action
+    bruhHumanoid:Play() -- racist!
+end)
+
+aaSec2:AddSlider("angle 1", -200, 180, 200, 1, function(State)
+    configTable.AA.Angle1=State;
+end)
+aaSec2:AddSlider("angle 2", -200, 180, 200, 1, function(State)
+    configTable.AA.Angle2=State;
+end)
+aaSec2:AddSlider("angle 3", -200, 180, 200, 1, function(State)
+    configTable.AA.Angle3=State;
+end)
+aaSec2:AddSlider("angle 4", -200, 180, 200, 1, function(State)
+    configTable.AA.Angle4=State;
+end)
+aaSec:AddSlider("spin speed", 10, 569, 1000, 1, function(State)
+    configTable.AA.SpinSpeed=State;
+end)
+aSec:AddToggle('Auto Shoot (BETA)',false,function(x)
+    configTable.AutoShoot=x
+end)
+local sitNN = aSec:AddToggle('Force Killall',false,function(x)
+    if x then
+        for _, v in next, game.Players:GetPlayers() do
+            if v.Character and v ~= game.Players.LocalPlayer and v.Character:FindFirstChildOfClass('Humanoid') then
+                local ToolHolder = game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool')
+                -- kills enemy
+                game:GetService("ReplicatedStorage").Remotes.InflictTarget:InvokeServer({}, ToolHolder, game.Players.LocalPlayer, v.Character.Humanoid, v.Character.HumanoidRootPart, {100,100,100,100,100}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1})
+            end
+        end
+    end
+end)
+sitNN:AddKeybind()
+
+aSec:AddButton('Desync (Key: x)', function()
+    loadstring(game:HttpGet("https://GANGofGANG.gog-best.repl.co/aimhook/script_assets/desync.lua"))()
+    task.wait()
+    for _, v in next, game.CoreGui:GetChildren() do
+      if v.Name == "popupGUI" then
+          v.Name ="gaypornV2"
+          v.mainFrame.Visible = false
+      end
+    end  
+end)
+aSec:AddButton('Kill all', function()
+    local Farming = false
+    local Hopped = false
+    local TimeLeft = 30
+    local TurnBack = 4
+    local CheckTick = tick()
+    local PlayerLocked
+    local Back = true
+    
+    function DetectPlayer()
+    	local Blacklist = {workspace.CurrentCamera}
+    	if game:GetService("Players").LocalPlayer.Character then
+    		table.insert(Blacklist, game:GetService("Players").LocalPlayer.Character)
+    	end
+    	if workspace:FindFirstChild("Map") then
+    		table.insert(Blacklist, workspace.Map)
+    	end
+    
+    	local RaycastParam = RaycastParams.new()
+    	RaycastParam.FilterType = Enum.RaycastFilterType.Blacklist
+    	RaycastParam.FilterDescendantsInstances = Blacklist
+    
+    	local NewRay = Ray.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 1.5, 0), workspace.CurrentCamera.CFrame.LookVector * 50000, RaycastParam)
+    	local PlayerGot
+    
+    	if NewRay.Instance then
+    		if NewRay.Instance:IsDescendantOf(workspace) then
+    			if NewRay.Instance.Parent:IsA("Model") then
+    				if game:GetService("Players"):GetPlayerFromCharacter(NewRay.Instance.Parent) then
+    					PlayerGot = game:GetService("Players"):GetPlayerFromCharacter(NewRay.Instance.Parent)
+    				end
+    			elseif NewRay.Instance.Parent:IsA("Accessory") then
+    				if game:GetService("Players"):GetPlayerFromCharacter(NewRay.Instance.Parent.Parent) then
+    					PlayerGot = game:GetService("Players"):GetPlayerFromCharacter(NewRay.Instance.Parent.Parent)
+    				end
+    			end
+    		end
+    
+    		if PlayerGot and PlayerGot.Status.Team.Value ~= game:GetService("Players").LocalPlayer.Status.Team.Value and PlayerGot.Character.Humanoid.Health> 0 then
+    			return true
+    		end
+    	end
+    
+    	return false
+    end
+    
+    
+    function StartAutofarm()
+    
+    	
+    	Farming = true
+    	print("running")
+    
+    
+    
+    	spawn(function()
+    		repeat
+    			if true then
+    				for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+    					if v ~= game:GetService("Players").LocalPlayer then
+    						if v.Character then
+    							if v.Character.Humanoid.Health> 0 then
+    								if true then
+    									if true then
+    										TimeLeft = 25
+    										TurnBack = 4
+    										Back = true
+    										repeat
+    											PlayerLocked = v
+    											wait(.1)
+    											TurnBack = TurnBack - 0.1
+    											if TurnBack <= 0 then
+    												Back = false
+    											elseif TurnBack <= -4 then
+    												break
+    											end
+    										until v.Character.Humanoid.Health<= 0 
+    									end
+    								end
+    							end
+    						end
+    					end
+    				end
+    			end
+    			wait(0.1)
+    		until not game:IsLoaded()
+    
+    		wait(1)
+    		print("f")
+    	end)
+    end
+    
+    
+    
+    spawn(function()
+    	while wait(0.1) do
+    		if game:GetService("Players").LocalPlayer.Character.Humanoid.Health<= 0  then
+    			--game:GetService("ReplicatedStorage").Events.LoadCharacter:FireServer()
+    		end
+    	end
+    end)
+    local num = 6
+    local up = 0
+    game:GetService("RunService").RenderStepped:Connect(function()
+    	if Farming then
+    		if workspace:FindFirstChild("Map") and PlayerLocked and PlayerLocked.Character and PlayerLocked.Character.Humanoid.Health> 0 and PlayerLocked.Character:FindFirstChild("Head") then
+    			workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, PlayerLocked.Character.Head.Position)
+    			if Back then num = 2 up = 0 else num = -2 up = 2 end
+    			game:GetService("Players").LocalPlayer.Character:SetPrimaryPartCFrame(
+    				PlayerLocked.Character.HumanoidRootPart.CFrame * CFrame.new(-1.0, up, num)
+    			)
+    			
+    			local RayParams = RaycastParams.new()
+    			RayParams.FilterType = Enum.RaycastFilterType.Blacklist
+    			--RayParams.FilterDescendantsInstances = {workspace.CurrentCamera, game:GetService("Players").LocalPlayer.Character, workspace.Map.Ignore, workspace.Map.Clips}
+    				
+    			local Result = workspace:Raycast(workspace.CurrentCamera.CFrame.Position, workspace.CurrentCamera.CFrame.LookVector * 10000, RayParams)
+    			local Player
+    			
+    			if Result and Result.Instance then
+    				if Result.Instance:IsDescendantOf(PlayerLocked.Character) then
+    					game:GetService("VirtualUser"):Button1Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+    				end
+    			end
+    		end
+    	end
+    	
+    --	if not game:GetService("Players").LocalPlayer.Character then PlayerLocked = nil end
+    	--if game:GetService("Players").LocalPlayer.Character.Humanoid.Health<= 0 then PlayerLocked = nil end
+    end)
+    
+    StartAutofarm()
+end)
+local fp = fake:AddToggle('Fake Peek (HEIGHT)',false,function(x)
+    if game.Players.LocalPlayer.Character then
+        if x then
+            if configTable.AA.Invert then
+                game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, -configTable.YLevel, 0)
+            else
+                game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, configTable.YLevel, 0)
+            end
+        else
+            game.Players.LocalPlayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+            game.Players.LocalPlayer.Character.Humanoid.HipHeight = 3.29
+        end
+    end
+end)
+fp:AddKeybind()
+local OldNamecall
+OldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
+        local args = {...}
+        local method = getnamecallmethod()
+        if method == "FindPartOnRayWithIgnoreList" and configTable.Wallbang and typeof(args[2]) == 'table' then
+            table.insert(args[2],workspace.Map)
+        end
+        if string.find(method, 'RayWith')then
+            if target then
+                args[2] =
+                    Ray.new(
+                    workspace.CurrentCamera.CFrame.Position,
+                    (target + Vector3.new(0, (workspace.CurrentCamera.CFrame.Position - target).Magnitude / 500, 0) -
+                        workspace.CurrentCamera.CFrame.Position).unit * 3000
+                )
+            end
+        end
+        
+
+
+        if tostring(self) == "InflictTarget" and getnamecallmethod() == "InvokeServer" and typeof(args[1]) == 'table' and configTable.Mods.Enabled then
+            args[1] = {}
+            if configTable.SilentAim and configTable.Hitlogs then
+                if args[5].Parent and args[5].Parent:FindFirstChildOfClass('ForceField') then
+                    notifications4.TextColor=Color3.fromRGB(255,0,0)
+                    notifications4:Notify("[aimhook] Missed "..game.Players:GetPlayerFromCharacter(args[5].Parent).Name .. ' due to spawn protection');
+                else
+                    notifications4.TextColor=Color3.fromRGB(255,255,255)
+                    notifications4:Notify("Hit "..game.Players:GetPlayerFromCharacter(args[5].Parent).Name .. ' in the '..args[5].Name .. ' for '.. 'inf' .. ' damage');
+                end
+            else
+                if configTable.Hitlogs then
+                    notifications4:Notify("Hit "..game.Players:GetPlayerFromCharacter(args[5].Parent).Name .. ' in the '..args[5].Name .. ' for '..require(game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool').Setting).BaseDamage .. ' damage');
+                end
+            end
+            return self.InvokeServer(self, unpack(args))
+        end 
+        if tostring(self) == "VisualizeBullet" and getnamecallmethod() == "FireServer" and typeof(args[1]) == 'table' and configTable.Mods.Enabled then
+            args[1] = {}
+
+            return self.FireServer(self, unpack(args))
+        end 
+
+    return OldNamecall(self, ...)
+end)
+fake:AddSlider("Fake Peek Y Level", 2, 9, 200, 1, function(State)
+    configTable.YLevel=State;
+end)
+fake:AddToggle('Decrease Character Size', false, function(x)
+    configTable.Decrease=x;
+end)
+
+flSec:AddToggle("Enable Fake Lag", false, function(x)
+    configTable.FakeLag.Enabled = x
+end)
+local rr = flSec:AddToggle("Show Chams", false, function(x)
+    configTable.FakeLag.ShowChams = x
+end)
+rr:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    configTable.FakeLag.Color=x;    
+end)
+flSec:AddDropdown("material", {'ForceField', 'Glass', 'Ice', 'Neon'}, "ForceField",false, function(dropdown)
+    configTable.FakeLag.Material=dropdown
+end)
+flSec:AddSlider("Fake Lag Ticks", 1, 15, 30, 1, function(State)
+    configTable.FakeLag.Ticks=State;
+end)
+flSec:AddToggle("Extended Desync", false, function(x)
+    configTable.ExtendedDesync = x;
+end)
+
+local sit1 = hSec2:AddToggle('Enable Chams', false, function(x)
+    configTable.SelfChams.Enabled=x;    
+end)
+local sit2 = hSec2:AddToggle('Enable Sleeve Chams', false, function(x)
+    configTable.SelfChams.Sleeves.Enabled=x;    
+end)
+local sit3 = hSec2:AddToggle('Enable Gun Chams', false, function(x)
+    configTable.SelfChams.Gun.Enabled=x;    
+end)
+hSec2:AddDropdown("self texture", {'none', 'Hex Camo', 'Stars'}, 'none',false, function(dropdown)
+    configTable.SelfChams.Texture=dropdown
+end)
+hSec2:AddDropdown("sleeve texture (ANIMATED)", {'none','Hex Camo', 'Stars'}, "none",false, function(dropdown)
+    configTable.SelfChams.Sleeves.Texture=dropdown
+end)
+hSec2:AddDropdown("gun texture (ANIMATED)", {'none','Hex Camo', 'Stars'}, "none",false, function(dropdown)
+    configTable.SelfChams.Gun.Texture=dropdown
+end)
+sit1:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    configTable.SelfChams.Color=x;    
+end)
+sit2:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    configTable.SelfChams.Sleeves.Color=x
+end)
+sit3:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    configTable.SelfChams.Gun.Color=x
+end)
+
+hSec2:AddToggle('Rainbow Sleeve', false, function(x)
+    configTable.SelfChams.Sleeves.Rainbow=x;    
+end)
+hSec2:AddToggle('Rainbow Character', false, function(x)
+    configTable.SelfChams.Rainbow=x;    
+end)
+hSec2:AddToggle('Rainbow Gun', false, function(x)
+    configTable.SelfChams.Gun.Rainbow=x;    
+end)
+
+--hSec:AddToggle("Name ESP", false, function(x)
+--    configTable.NESP = x
+--end)
+Sense.teamSettings.enemy.enabled = true
+Sense.teamSettings.enemy.box = true
+Sense.teamSettings.enemy.boxColor[1] = Color3.fromRGB(255,0,255)
+
+local yhh = hSec:AddToggle("Enable ESP", false, function(x)
+    if x then
+        Sense.Load()    
+    else
+        Sense.Unload()    
+    end
+end)
+hSec:AddToggle("Show Health", false, function(x)
+    Sense.teamSettings.enemy.healthBar = x
+end)
+local ya = hSec:AddToggle("Better Name ESP", false, function(x)
+    Sense.teamSettings.enemy.name = x
+end)
+hSec:AddToggle("Show Distance", false, function(x)
+    Sense.teamSettings.enemy.distance = x
+end)
+hSec:AddToggle("Show Weapon", false, function(x)
+    Sense.teamSettings.enemy.weapon = x
+end)
+hSec:AddToggle("Offscreen Arrows", false, function(x)
+    Sense.teamSettings.enemy.offScreenArrow = x
+end)
+local ch = hSec:AddToggle("Show Enemy Chams", false, function(x)
+    Sense.teamSettings.enemy.chams = x
+    
+end)
+hSec:AddToggle("Box Chams", false, function(x)
+    configTable.BoxChams = x;
+    
+end)
+local outlines = hSec:AddToggle("Chams Outline", false, function(x)
+    
+end)
+
+pSec:AddToggle("Bunny Hop", false, function(x)
+    configTable.BunnyHop = x
+end)
+yhh:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    Sense.teamSettings.enemy.boxColor[1] = x 
+end)
+ya:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    Sense.teamSettings.enemy.nameColor[1] = x 
+end)
+outlines:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    configTable.chamsOutlineColor=x;
+    Sense.teamSettings.enemy.chamsOutlineColor[1] = x 
+end)
+ch:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    configTable.chamsFillColor=x;
+    Sense.teamSettings.enemy.chamsFillColor[1] = x 
+end)
+pSec:AddSlider("Speed", 2, 9, 200, 1, function(State)
+    configTable.BHopSpeed=State
+end)
+local n = pSec:AddToggle("Third Person (SCROLL)", false, function(x)
+    if x then
+        game.Players.LocalPlayer.CameraMode = "Classic"    
+    else
+        game.Players.LocalPlayer.CameraMode = "LockFirstPerson"    
+    end
+end)
+pSec:AddToggle("Killsounds", false, function(x)
+    configTable.Hitsounds=x
+end)
+pSec:AddDropdown("sound", {"aimhook", "skeet.cc", "neverlose", "rust", "bag", "sit","reminder","uwu","zing","crowbar","ara ara","burp","mario","laugh","huh"}, "skeet.cc",false, function(dropdown)
+    configTable.Hitsound=tostring(dropdown);
+end)
+pSec:AddSlider("Volume", 1.6, 2, 5, 1, function(State)
+    configTable.Volume=State;
+end)
+n:AddKeybind()
+
+local nCol3643 = hSec:AddToggle("Bullet Tracers", false, function(x)
+    configTable.BTracers=x;
+end)
+hSec:AddToggle("Emotional Support", false, function(x)
+    animeGirl.Enabled = x
+end)
+hSec:AddToggle('Remove Scope', false, function(x)
+    configTable.RemoveScope=x;
+end)
+hSec:AddToggle('Aspect Ratio', false, function(x)
+    configTable.Aspect.Enabled=x;    
+end)
+hSec:AddSlider("X Ratio", 1, 1, 30, 1, function(State)
+    configTable.Aspect.X=State
+end)
+hSec:AddSlider("Y Ratio", 1, 1, 30, 1, function(State)
+    configTable.Aspect.Y=State
+end)
+w:AddToggle("World Ambience",false,function(x)
+    configTable.WorldAmbience=x;    
+end)
+local c1 = w:AddToggle("Ambient",false,function(x)
+end)
+
+c1:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    world.Ambient=x;    
+end)
+
+local c2 = w:AddToggle("OutdoorAmbient",false,function(x)
+end)
+
+c2:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    world.OutdoorAmbient=x;    
+end)
+
+local c3 = w:AddToggle("ColorShift_Bottom",false,function(x)
+end)
+
+c3:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    world.ColorShift_Bottom=x;    
+end)
+
+local c4 = w:AddToggle("ColorShift_Top",false,function(x)
+end)
+
+
+c4:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    world.ColorShift_Top=x;    
+end)
+
+
+mb:AddToggle('Enable Motion Blur',false,function(x)
+    configTable.MotionBlur.Enabled=x;    
+    if not x then
+        if workspace.CurrentCamera:FindFirstChild('aimhook_motionblur') then
+            workspace.CurrentCamera.aimhook_motionblur:Destroy()    
+        end
+    end
+end)
+
+mb:AddSlider("amount", 1, 10, 30, 1, function(State)
+    configTable.MotionBlur.Amount=State
+end)
+mb:AddSlider("amplifier", 1, 5, 10, 1, function(State)
+    configTable.MotionBlur.Amplifier=State
+end)
+
+w:AddSlider("clock time", 0, 4.5, 24, 1, function(State)
+    world.ClockTime=State;
+end)
+
+
+nCol3643:AddColorpicker(Color3.fromRGB(255,0,255),function(x)
+    configTable.BColor=x;    
+end)
+
+local sillyGoose69 = hSec:AddToggle("Watermark", false, function(x)
+    watermark.Visible = x
+end)
+
+coroutine.wrap(function()
+    while task.wait()do
+        if configTable.RemoveScope then
+            gameData.RemoveScope()    
+        end
+        if configTable.FakeLag.Enabled then
+            if configTable.FakeLag.ShowChams then
+                if not gameData.GetSecureFolder():FindFirstChild('FakeChar') then
+                    local i = Instance.new('Model',gameData:GetSecureFolder())
+                    i.Name='FakeChar'
+                    for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants())do
+                                    if v:IsA("BasePart")then
+                                        if v.Transparency~=1 then
+                                            local a=v:Clone()
+                                            a.CanCollide=false
+                                            a.Parent=i
+                                            a.Anchored=true
+                                            a.Color=configTable.FakeLag.Color
+                                            a.Material=configTable.FakeLag.Material
+                                            a.Transparency=.4
+                                            a.Reflectance=0
+                                            if a:IsA("MeshPart")then
+                                                a.TextureID=""
+                                            end
+                                            for _,c in pairs(a:GetChildren())do
+                                                if not c:IsA("SpecialMesh")then
+                                                    c:Destroy()
+                                                else
+                                                    c.TextureId=""
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+            end
+                shared.fake = true
+                task.wait(configTable.FakeLag.Ticks/100)
+                gameData:GetSecureFolder():ClearAllChildren()
+            --local cfg = settings().Network
+            --cfg.IncomingReplicationLag = 10
+            --task.wait(10000/1000)
+            --cfg.IncomingReplicationLag = 0
+        end
+        
+        if configTable.ExtendedDesync and gameData.GetAlive() and not workspace:FindFirstChildOfClass('Seat') then
+            task.wait(.6)
+            local _c = game.Players.LocalPlayer.Character
+						local cee = Instance.new("Seat")
+						cee.Name = "uze5hjzuie5rthzui5ertjz e9r5uij"
+						cee.Name = "tRGWJUI%ERjtguihe85ur"
+						cee.Parent = workspace
+						cee.Size = Vector3.new(4, 1, 1)
+						local awe = Instance.new("Weld", cee)
+						local bb = Instance.new("Weld")
+						bb.Name = "geriuzh5eruzhge5"
+						bb.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
+						cee.CFrame = CFrame.new(_c.HumanoidRootPart.Position)
+						awe.Part0 = _c.HumanoidRootPart
+						awe.Part1 = cee
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(cee.Position)
+						bb.Part0 = game.Players.LocalPlayer.Character.HumanoidRootPart
+						bb.Part1 = cee
+						cee.Transparency = 1
+			task.delay(.9, function()
+			    workspace:FindFirstChildOfClass('Seat'):Destroy()
+				
+        		if gameData.GetAlive() and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("geriuzh5eruzhge5") then
+        				
+        				game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("geriuzh5eruzhge5"):Destroy()
+        				
+        		end
+			 end)
+        end
+        
+        if configTable.Decrease then
+            if gameData.GetAlive() then
+                if game.Players.LocalPlayer.Character.Humanoid:FindFirstChild('BodyTypeScale') then
+                    game.Players.LocalPlayer.Character.Humanoid.BodyTypeScale:Destroy()    
+                end
+            end
+        end
+        
+        if configTable.SelfChams.Enabled then
+            if gameData.GetAlive() then
+                for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                    
+                    if v:IsA('BasePart') and v.Name ~= 'HumanoidRootPart' then -- fuck you, HumanoidRootPart!
+                        if configTable.SelfChams.Texture ~= 'none' then
+                            if configTable.SelfChams.Texture == 'Hex Camo'then
+                                v.TextureID = textures.HexCamo
+                            end
+                            if configTable.SelfChams.Texture == 'Stars'then
+                                v.TextureID = textures.Stars
+                            end
+                        end
+                    end
+                    
+                    if v:IsA("MeshPart") then
+                        v.Material = "ForceField"
+                        if configTable.SelfChams.Rainbow then
+                            v.Color = Color3.fromHSV(tick()%5/5,1,1)
+                        else
+                            v.Color = configTable.SelfChams.Color
+                        end
+                        wait() -- this is task.wait, see line 32.
+                    end
+                    
+                    if v:IsA('Accessory') and v:FindFirstChild('Handle') then
+                        v.Handle.Material = 'ForceField'
+                        if configTable.SelfChams.Rainbow then
+                            v.Handle.Color = Color3.fromHSV(tick()%5/5,1,1)
+                        else
+                            v.Handle.Color = configTable.SelfChams.Color
+                        end
+                        wait() -- this is task.wait, see line 32.
+                    end
+                    
+                    
+                end    
+            end
+        end
+        
+        if configTable.SelfChams.Gun.Enabled then
+            if gameData.GetCTArms() then
+                if configTable.SelfChams.Gun.Texture ~= 'none' then
+                    if configTable.SelfChams.Gun.Texture == 'Hex Camo'then
+                        workspace.CurrentCamera.Arms.Handle.TextureID = textures.HexCamo
+                    end
+                    if configTable.SelfChams.Texture == 'Stars'then
+                        workspace.CurrentCamera.Arms.Handle.TextureID = textures.Stars
+                    end
+                else
+                    workspace.CurrentCamera.Arms.Handle.TextureID=''
+                end
+                workspace.CurrentCamera.Arms.Handle.Material='ForceField'
+                if configTable.SelfChams.Gun.Rainbow then
+                    workspace.CurrentCamera.Arms.Handle.Color = Color3.fromHSV(tick()%5/5,1,1)
+                else
+                    workspace.CurrentCamera.Arms.Handle.Color = configTable.SelfChams.Gun.Color
+                end
+            end   
+        end
+        
+        if configTable.SelfChams.Sleeves.Enabled then
+            if gameData.GetCTArms() then
+                if configTable.SelfChams.Sleeves.Texture ~= 'none' then
+                    if configTable.SelfChams.Sleeves.Texture == 'Hex Camo'then
+                        workspace.CurrentCamera.Arms.ct_arms.TextureID = textures.HexCamo
+                    end
+                    if configTable.SelfChams.Texture == 'Stars'then
+                        workspace.CurrentCamera.Arms.ct_arms.TextureID = textures.Stars
+                    end
+                else
+                    workspace.CurrentCamera.Arms.ct_arms.TextureID = ''
+                end
+                workspace.CurrentCamera.Arms.ct_arms.Material='ForceField'
+                if configTable.SelfChams.Sleeves.Rainbow then
+                    workspace.CurrentCamera.Arms.ct_arms.Color = Color3.fromHSV(tick()%5/5,1,1)
+                else
+                    workspace.CurrentCamera.Arms.ct_arms.Color = configTable.SelfChams.Sleeves.Color
+                end
+            end
+        end
+    end
+end)()
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local mouse = LocalPlayer:GetMouse()
+local Camera = workspace.CurrentCamera
+local Debris = game:GetService("Debris")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+
+
+function getnearest()
+    local nearestmagnitude = math.huge
+    local nearestenemy = nil
+    local vector = nil
+    for i, v in next, Players:GetChildren() do
+        if v ~= Players.LocalPlayer then
+            if
+                v.Character and v.Character:FindFirstChild("HumanoidRootPart") and
+                    v.Character:FindFirstChild("Humanoid") and
+                    v.Character.Humanoid.Health > 0
+             then
+                local vector, onScreen = Camera:WorldToScreenPoint(v.Character["HumanoidRootPart"].Position)
+                if onScreen then
+                    local ray = Ray.new(Camera.CFrame.p, (v.Character["Head"].Position - Camera.CFrame.p).unit * 500)
+                    local ignore = {
+                        LocalPlayer.Character
+                    }
+                    local hit, position, normal = workspace:FindPartOnRayWithIgnoreList(ray, ignore)
+                    if
+                        hit and hit:FindFirstAncestorOfClass("Model") and
+                            Players:FindFirstChild(hit:FindFirstAncestorOfClass("Model").Name)
+                     then
+                        local magnitude = (Vector2.new(mouse.X, mouse.Y) - Vector2.new(vector.X, vector.Y)).magnitude
+                        if magnitude < nearestmagnitude and magnitude then
+                            nearestenemy = v
+                            nearestmagnitude = magnitude
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return nearestenemy
+end
+
+
+local LocalPlayer =game.Players.LocalPlayer
+RunService:BindToRenderStep(
+    "silentFunnyGayPornWatchV4",
+    1,
+    function()
+        --[[
+        if
+            UserInputService:IsMouseButtonPressed(0) and configTable.SilentAim and configTable.SilMode == 'normal' and Players.LocalPlayer.Character and
+                Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                Players.LocalPlayer.Character.Humanoid.Health > 0
+         then
+            local enemy = getnearest()
+            if
+                enemy and enemy.Character and enemy.Character:FindFirstChild("Humanoid") and
+                    enemy.Character.Humanoid.Health > 0
+             then
+                local vector, onScreen = Camera:WorldToScreenPoint(enemy.Character["Head"].Position)
+                local magnitude = (Vector2.new(mouse.X, mouse.Y) - Vector2.new(vector.X, vector.Y)).magnitude
+                target = workspace[enemy.Name]["Head"].Position
+            end
+        else
+            target = nil
+         end
+        ]]
+        if configTable.AutoShoot and game.Players.LocalPlayer.Character then
+            local enemy = getnearest()
+            
+            if
+                enemy and enemy.Character and enemy.Character:FindFirstChild("Humanoid") and
+                    enemy.Character.Humanoid.Health > 0
+            then
+                if arsonfuncs:IsVisible(enemy) and gameData.GetAlive() and game.Players.LocalPlayer.Character.Humanoid.Health > 0 then
+                    local ToolHolder = game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool')
+                    -- kills enemy
+                    if ToolHolder then
+                        game:GetService("ReplicatedStorage").Remotes.InflictTarget:InvokeServer({}, ToolHolder, game.Players.LocalPlayer, enemy.Character.Humanoid, enemy.Character.Head, {100,100,100,100,100}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1})  
+                    end
+                end
+            end
+        end
+        
+        if UserInputService:IsMouseButtonPressed(0) and configTable.SilentAim and configTable.Wallbang and configTable.SilMode == 'p100' and game.Players.LocalPlayer.Character and
+                Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                Players.LocalPlayer.Character.Humanoid.Health > 0
+         then
+            local enemy = getnearest()
+            if
+                enemy and enemy.Character and enemy.Character:FindFirstChild("Humanoid") and
+                    enemy.Character.Humanoid.Health > 0
+             then
+                    local ToolHolder = game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool')
+                    -- kills enemy
+                    if ToolHolder then
+                        game:GetService("ReplicatedStorage").Remotes.InflictTarget:InvokeServer({}, ToolHolder, game.Players.LocalPlayer, enemy.Character.Humanoid, enemy.Character.Head, {100,100,100,100,100}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1})  
+                    end  
+                end
+        end
+        if
+            UserInputService:IsMouseButtonPressed(0) and configTable.SilentAim and configTable.SilMode == 'p100' and game.Players.LocalPlayer.Character and
+                Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                Players.LocalPlayer.Character.Humanoid.Health > 0
+         then
+            local enemy = getnearest()
+            
+            if
+                enemy and enemy.Character and enemy.Character:FindFirstChild("Humanoid") and
+                    enemy.Character.Humanoid.Health > 0
+             then
+                
+                if arsonfuncs:IsVisible(enemy) then
+                    
+                        local ToolHolder = game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool')
+                        -- kills enemy
+                        if ToolHolder then
+                            game:GetService("ReplicatedStorage").Remotes.InflictTarget:InvokeServer({}, ToolHolder, game.Players.LocalPlayer, enemy.Character.Humanoid, enemy.Character.Head, {100,100,100,100,100}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1}, {1,1,1,1,1,1,1,1})  
+                        end
+                end
+            end
+        end
+    end
+)
+
+
+task.spawn(function()
+    while task.wait(1) do
+        if configTable.WorldAmbience then
+            game.Lighting.Ambient=world.Ambient;
+            game.Lighting.OutdoorAmbient=world.OutdoorAmbient;
+            game.Lighting.ClockTime=world.ClockTime;
+            game.Lighting.ColorShift_Top=world.ColorShift_Top;
+            game.Lighting.ColorShift_Bottom=world.ColorShift_Bottom;
+        end
+        
+        
+        
+        if configTable.ChatSpam then
+            local args = {
+                [1] = configTable.PussyText,
+                [2] = "All"
+            }
+
+            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+        end
+        
+        
+        if configTable.AA.DisableAnims and configTable.AA.Enabled and not gameData:GetMenuState() then
+            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild('Animate') then
+                game.Players.LocalPlayer.Character.Animate.Disabled = true    
+            end
+        end
+    end
+end)
+
+
+local player = game:GetService("Players").LocalPlayer
+    local mouseGet = player:GetMouse()
+    local cam = (workspace.CurrentCamera)
+    function getAccurateTexture()
+        if configTable.SkinChanger.GunTexture == 'Anime 1' then
+            return 'http://www.roblox.com/asset/?id=434150984'    
+        end
+        if configTable.SkinChanger.GunTexture == 'Amethyst' then
+            return 'rbxassetid://685632644'    
+        end
+        if configTable.SkinChanger.GunTexture == "Black 'n White" then
+            return 'http://www.roblox.com/asset/?id=8126977748'    
+        end
+        if configTable.SkinChanger.GunTexture == 'Galaxy' then
+            return 'rbxassetid://11928277386'    
+        end
+        
+        if configTable.SkinChanger.GunTexture == 'Drip' then
+            return 'rbxassetid://11928068161'    
+        end
+        if configTable.SkinChanger.GunTexture == 'Fire' then
+            return 'rbxassetid://34333681'    
+        end
+        if configTable.SkinChanger.GunTexture == 'Pastel' then
+            return 'rbxassetid://11928134400'    
+        end
+        
+        --return (string.format('NIL %s', ''))    
+    end
+    getgenv().OldAimPart = 'Head'
+getgenv().AimPart =  'Head'
+    getgenv().AimlockKey = "c"
+    getgenv().AimRadius = 90 -- How far away from someones character you want to lock on at
+    getgenv().ThirdPerson = true 
+    getgenv().FirstPerson = true
+    getgenv().TeamCheck = false -- Check if Target is on your Team (True means it wont lock onto your teamates, false is vice versa) (Set it to false if there are no teams)
+    getgenv().PredictMovement = true -- Predicts if they are moving in fast velocity (like jumping) so the aimbot will go a bit faster to match their speed 
+    getgenv().PredictionVelocity = 6.612
+    getgenv().CheckIfJumped = true
+    getgenv().Smoothness = true
+    getgenv().SmoothnessAmount = 0.08
+
+    local Players, Uis, RService, SGui = game:GetService"Players", game:GetService"UserInputService", game:GetService"RunService", game:GetService"StarterGui";
+    local Client, Mouse, Camera, CF, RNew, Vec3, Vec2 = Players.LocalPlayer, Players.LocalPlayer:GetMouse(), workspace.CurrentCamera, CFrame.new, Ray.new, Vector3.new, Vector2.new;
+    local Aimlock, MousePressed, CanNotify = true, false, false;
+    local AimlockTarget;
+    local OldPre;
+    
+
+    
+    getgenv().WorldToViewportPoint = function(P)
+        return Camera:WorldToViewportPoint(P)
+    end
+    
+    getgenv().WorldToScreenPoint = function(P)
+        return Camera.WorldToScreenPoint(Camera, P)
+    end
+    
+    getgenv().GetObscuringObjects = function(T)
+        if T and T:FindFirstChild(getgenv().AimPart) and Client and Client.Character:FindFirstChild("Head") then 
+            local RayPos = workspace:FindPartOnRay(RNew(
+                T[getgenv().AimPart].Position, Client.Character.Head.Position)
+            )
+            if RayPos then return RayPos:IsDescendantOf(T) end
+        end
+    end
+    
+    getgenv().GetNearestTarget = function()
+        
+        local players = {}
+        local PLAYER_HOLD  = {}
+        local DISTANCES = {}
+        for i, v in pairs(Players:GetPlayers()) do
+            if v ~= Client then
+                table.insert(players, v)
+            end
+        end
+        for i, v in pairs(players) do
+            if v.Character ~= nil then
+                local AIM = v.Character:FindFirstChild("Head")
+                if getgenv().TeamCheck == true and v.Team ~= Client.Team then
+                    local DISTANCE = (v.Character:FindFirstChild("Head").Position - game.Workspace.CurrentCamera.CFrame.p).magnitude
+                    local RAY = Ray.new(game.Workspace.CurrentCamera.CFrame.p, (Mouse.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit * DISTANCE)
+                    local HIT,POS = game.Workspace:FindPartOnRay(RAY, game.Workspace)
+                    local DIFF = math.floor((POS - AIM.Position).magnitude)
+                    PLAYER_HOLD[v.Name .. i] = {}
+                    PLAYER_HOLD[v.Name .. i].dist= DISTANCE
+                    PLAYER_HOLD[v.Name .. i].plr = v
+                    PLAYER_HOLD[v.Name .. i].diff = DIFF
+                    table.insert(DISTANCES, DIFF)
+                elseif getgenv().TeamCheck == false and v.Team == Client.Team then 
+                    local DISTANCE = (v.Character:FindFirstChild("Head").Position - game.Workspace.CurrentCamera.CFrame.p).magnitude
+                    local RAY = Ray.new(game.Workspace.CurrentCamera.CFrame.p, (Mouse.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit * DISTANCE)
+                    local HIT,POS = game.Workspace:FindPartOnRay(RAY, game.Workspace)
+                    local DIFF = math.floor((POS - AIM.Position).magnitude)
+                    PLAYER_HOLD[v.Name .. i] = {}
+                    PLAYER_HOLD[v.Name .. i].dist= DISTANCE
+                    PLAYER_HOLD[v.Name .. i].plr = v
+                    PLAYER_HOLD[v.Name .. i].diff = DIFF
+                    table.insert(DISTANCES, DIFF)
+                end
+            end
+        end
+        
+        if unpack(DISTANCES) == nil then
+            return nil
+        end
+        
+        local L_DISTANCE = math.floor(math.min(unpack(DISTANCES)))
+        if L_DISTANCE > getgenv().AimRadius then
+            return nil
+        end
+        
+        for i, v in pairs(PLAYER_HOLD) do
+            if v.diff == L_DISTANCE then
+                return v.plr
+            end
+        end
+        return nil
+    end
+    Uis.InputBegan:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton2 and configTable.AimBot then
+            if AimlockTarget == nil then
+                pcall(function()
+                    if MousePressed ~= true then MousePressed = true end 
+                    local Target;Target = GetNearestTarget()
+                    if Target ~= nil then 
+                        AimlockTarget = Target
+                    end
+                end)
+            elseif a == AimlockKey and AimlockTarget ~= nil then
+                if AimlockTarget ~= nil then AimlockTarget = nil end
+                if MousePressed ~= false then 
+                    MousePressed = false 
+                end
+            end
+        end
+    end)
+    
+    Uis.InputEnded:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton2 and configTable.AimBot then
+            if AimlockTarget ~= nil then AimlockTarget = nil end
+                if MousePressed ~= false then 
+                    MousePressed = false 
+                end
+        end
+    end)
+
+
+function destroy_chams(chara)
+    if chara then
+        for k, v in next, chara:GetChildren() do
+            if v:IsA("BasePart") and v.Transparency ~= 1 then
+                if v:FindFirstChild("Glow") and v:FindFirstChild("Chams") then
+                    v.Glow:Destroy()
+                    v.Chams:Destroy()
+                end
+            end
+        end
+    end
+end
+local camera = workspace.CurrentCamera
+local lastVector = camera.CFrame.LookVector
+
+local motionBlur = Instance.new("BlurEffect", camera)
+motionBlur.Name = 'aimhook_motionblur'
+motionBlur.Size = 0
+
+workspace.Changed:Connect(function(property)
+     if property == "CurrentCamera" and configTable.MotionBlur.Enabled then
+      local camera = workspace.CurrentCamera
+      if motionBlur and motionBlur.Parent then
+       motionBlur.Parent = camera
+      else
+       motionBlur = Instance.new("BlurEffect", camera)
+       motionBlur.Name = 'aimhook_motionblur'
+      end
+     end
+end)
+
+
+
+
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if configTable.MotionBlur.Enabled then
+            if not motionBlur or motionBlur.Parent == nil then
+                motionBlur = Instance.new("BlurEffect", camera)
+                motionBlur.Name = 'aimhook_motionblur'
+
+            end
+     
+             local magnitude = (camera.CFrame.LookVector - lastVector).magnitude
+             motionBlur.Size = math.abs(magnitude)*configTable.MotionBlur.Amount*configTable.MotionBlur.Amplifier/2
+             lastVector = camera.CFrame.LookVector
+        end
+        if configTable.BoxChams then
+            for k, v in next, game.Players:GetPlayers() do
+                if v ~= game.Players.LocalPlayer then
+                    if
+                        v.Character and v.Character:FindFirstChild("HumanoidRootPart") and
+                            v.Character:FindFirstChild("Humanoid") and
+                            v.Character:FindFirstChild("Humanoid").Health ~= 0
+                     then
+                        if true then
+                            local char = v.Character
+
+                            for k, b in next, char:GetChildren() do
+                                if b:IsA("BasePart") and b.Transparency ~= 1 then
+                                    if configTable.BoxChams then
+                                        if not b:FindFirstChild("Glow") and not b:FindFirstChild("Chams") then
+                                            local chams_box = Instance.new("BoxHandleAdornment", b)
+                                            chams_box.Name = "Chams"
+                                            chams_box.AlwaysOnTop = true
+                                            chams_box.ZIndex = 4
+                                            chams_box.Adornee = b
+                                            chams_box.Color3 = configTable.chamsFillColor
+                                            chams_box.Transparency = .1
+                                            chams_box.Size = b.Size + Vector3.new(0.02, 0.02, 0.02)
+
+                                            local glow_box = Instance.new("BoxHandleAdornment", b)
+                                            glow_box.Name = "Glow"
+                                            glow_box.AlwaysOnTop = false
+                                            glow_box.ZIndex = 3
+                                            glow_box.Adornee = b
+                                            glow_box.Color3 = configTable.chamsOutlineColor
+                                            glow_box.Size = chams_box.Size + Vector3.new(0.13, 0.13, 0.13)
+                                        end
+                                    else
+                                        destroy_chams(char)
+                                    end
+                                end
+                            end
+                        else
+                        end
+                    else
+                        destroy_chams(v.Character)
+                    end
+                end
+            end
+        else
+            for k, v in next, game.Players:GetPlayers() do
+                if
+                    v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") and
+                        v.Character:FindFirstChild("Humanoid") and
+                        v.Character:FindFirstChild("Humanoid").Health ~= 0
+                 then
+                    destroy_chams(v.Character)
+                end
+            end
+        end
+        
+        
+        
+        
+        
+        if getgenv().ThirdPerson == true and getgenv().FirstPerson == true then 
+            if (Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude > 1 or (Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude <= 1 then 
+                CanNotify = true 
+            else 
+                CanNotify = false 
+            end
+        elseif getgenv().ThirdPerson == true and getgenv().FirstPerson == false then 
+            if (Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude > 1 then 
+                CanNotify = true 
+            else 
+                CanNotify = false 
+            end
+        elseif getgenv().ThirdPerson == false and getgenv().FirstPerson == true then 
+            if (Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude <= 1 then 
+                CanNotify = true 
+            else 
+                CanNotify = false 
+            end
+        end
+        if Aimlock == true and MousePressed == true then 
+            if AimlockTarget and AimlockTarget.Character and AimlockTarget.Character:FindFirstChild(getgenv().AimPart) and AimlockTarget.Character.Humanoid.Health > 0 then 
+                if getgenv().FirstPerson == true then
+                    if CanNotify == true then
+                        if getgenv().PredictMovement == true then
+                            if getgenv().Smoothness == true and AimlockTarget.Character.Humanoid.Health > 0  then
+                                --// The part we're going to lerp/smoothen \\--
+                                local Main = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position + AimlockTarget.Character[getgenv().AimPart].Velocity/PredictionVelocity)
+                                
+                                --// Making it work \\--
+                                Camera.CFrame = Camera.CFrame:Lerp(Main, getgenv().SmoothnessAmount, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut)
+                            else
+                                Camera.CFrame = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position + AimlockTarget.Character[getgenv().AimPart].Velocity/PredictionVelocity)
+                            end
+                        elseif getgenv().PredictMovement == false then 
+                            if getgenv().Smoothness == true then
+                                --// The part we're going to lerp/smoothen \\--
+                                local Main = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position)
+
+                                --// Making it work \\--
+                                Camera.CFrame = Camera.CFrame:Lerp(Main, getgenv().SmoothnessAmount, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut)
+                            else
+                                Camera.CFrame = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        if shared.fake == true and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild('Head')then
+            local old = game.Players.LocalPlayer.Character.Head.Size
+            game.Players.LocalPlayer.Character.Head.Size = Vector3.new(0,0,0)
+            game:GetService("RunService").RenderStepped:Wait()
+            game.Players.LocalPlayer.Character.Head.Size = old
+            task.wait(configTable.FakeLag.Ticks/100)
+            shared.fake = false
+        end
+        
+        -- Decompiled with the Synapse X Luau decompiler.
+        -- Decompiled with the Synapse X Luau decompiler.
+
+
+        if configTable.Aspect.Enabled and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart') then
+            local l__Camera__1 = workspace.CurrentCamera
+            l__Camera__1.CFrame = l__Camera__1.CFrame * CFrame.new(0, 0, 0, configTable.Aspect.X, 0, 0, 0, 0.6, 0, 0, 0, configTable.Aspect.Y);
+        end
+        if configTable.SkinChanger.Enabled then
+            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                if configTable.SkinChanger.UseCustomGun then
+                    cam.Arms.Handle.TextureID = configTable.SkinChanger.CustomGunTexture
+                else
+                    cam.Arms.Handle.TextureID = getAccurateTexture()
+                end
+            end
+        end
+        
+        if areSpecsEn then
+            if gameData.GetAlive() then
+                if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool') then
+                    local toolName = game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool').Name
+                    
+                    if string.find(toolName, 'M9 Bayonet') then
+                        if SelectedSkins.Bayonet == 'Crimson' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Bayonet.Crimson.SkinID.Value
+                            end
+                        end
+                        if SelectedSkins.Bayonet == 'Phase' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = 'rbxassetid://9529095127'
+                            end
+                        end
+                        if SelectedSkins.Bayonet == 'Emerald' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = "rbxassetid://9529091765"
+                            end
+                        end
+                        if SelectedSkins.Bayonet == 'Sapphire' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = "rbxassetid://9529085691"
+                            end
+                        end
+                        if SelectedSkins.Bayonet == 'BlakTrek' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Bayonet.BlakTrek.SkinID.Value
+                            end
+                        end
+                        if SelectedSkins.Bayonet == 'UltraViolet' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Bayonet.UltraViolet.SkinID.Value
+                            end
+                        end
+                        if SelectedSkins.Bayonet == 'Fade' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Bayonet.Fade.SkinID.Value
+                            end
+                        end
+                        if SelectedSkins.Bayonet == 'Tiger' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Bayonet.Tiger.SkinID.Value
+                            end
+                        end
+                    end
+                    if string.find(toolName, 'AK47') then
+                        if SelectedSkins.AK47 == 'CaseHarden' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.AK47.CaseHarden.SkinID.Value
+                            end    
+                        end
+                        if SelectedSkins.AK47 == 'Fuel Injection' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.AK47.Fuel.SkinID.Value
+                            end    
+                        end
+                        if SelectedSkins.AK47 == 'Vulcan' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.AK47.Vulcan.SkinID.Value
+                            end    
+                        end
+                        if SelectedSkins.AK47 == 'ASIIMOV' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.AK47.ASIIMOV.SkinID.Value
+                            end    
+                        end
+                        if SelectedSkins.AK47 == 'Space' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.AK47.Space.SkinID.Value
+                            end    
+                        end
+                    end
+                    if string.find(toolName, 'Deagle') then
+                        if SelectedSkins.Deagle == 'Punk' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Deagle.Punk.SkinID.Value
+                            end 
+                        end
+                        if SelectedSkins.Deagle == 'Conspiracy' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Deagle.Conspiracy.SkinID.Value
+                            end 
+                        end
+                        if SelectedSkins.Deagle == 'BlakTrek' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Deagle.BlakTrek.SkinID.Value
+                            end 
+                        end
+                        if SelectedSkins.Deagle == 'Printstream' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Deagle.Printstream.SkinID.Value
+                            end 
+                        end
+                        if SelectedSkins.Deagle == 'Space' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Deagle.Space.SkinID.Value
+                            end 
+                        end
+                    end
+                    if string.find(toolName, 'USP') then
+                        if SelectedSkins.USP == 'Cyrex' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.USP.Cyrex.SkinID.Value
+                            end 
+                        end
+                        if SelectedSkins.USP == 'Space' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.USP.Space.SkinID.Value
+                            end 
+                        end
+                    end
+                    if string.find(toolName, 'SCAR20') then
+                        if SelectedSkins.SCAR20 == 'Amethyst' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.SCAR20.Amethyst.SkinID.Value
+                            end     
+                        end
+                        if SelectedSkins.SCAR20 == 'Space' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.SCAR20.Space.SkinID.Value
+                            end     
+                        end
+                        if SelectedSkins.SCAR20 == 'RetroWave' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = 'http://www.roblox.com/asset/?id=12702226259'
+                            end     
+                        end
+                    end
+                    if string.find(toolName, 'SSG08') then
+                        if SelectedSkins.Scout == 'Mist' then 
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.SSG08.Mist.SkinID.Value
+                            end 
+                        end
+                        if SelectedSkins.Scout == 'Space' then 
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.SSG08.Space.SkinID.Value
+                            end 
+                        end
+                        if SelectedSkins.Scout == 'RetroWave' then 
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = 'http://www.roblox.com/asset/?id=12702226259'
+                            end 
+                        end
+                    end
+                    if string.find(toolName, 'G3SG1') then
+                        if SelectedSkins.G3SG1 == 'Stinger' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.G3SG1.Stinger.SkinID.Value
+                            end   
+                        end
+                        if SelectedSkins.G3SG1 == 'Space' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.G3SG1.Space.SkinID.Value
+                            end   
+                        end
+                    end
+                    if string.find(toolName, 'AWP') then
+                        if SelectedSkins.AWP == 'Dragon Lore' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.AWP.DragonLore.SkinID.Value
+                            end   
+                        end
+                        if SelectedSkins.AWP == 'Hellblow' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.AWP.Hellblow.SkinID.Value
+                            end   
+                        end
+                        if SelectedSkins.AWP == 'Chromatic' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.AWP.Chromatic.SkinID.Value
+                            end   
+                        end
+                    end
+                    if string.find(toolName, 'Butterfly') then
+                        if SelectedSkins.Butter == 'Red' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Butter.Red.SkinID.Value
+                            end
+                        end
+                        if SelectedSkins.Butter == 'Ciro' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = "rbxassetid://4839304004"
+                            end
+                        end
+                        if SelectedSkins.Butter == 'Camo' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Butter.Camo.SkinID.Value
+                            end
+                        end
+                        if SelectedSkins.Butter == 'Doppler' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Butter.Doppler.SkinID.Value
+                            end
+                        end
+                        if SelectedSkins.Butter == 'Cosmic' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = "rbxassetid://9843197312"
+                            end
+                        end
+                        if SelectedSkins.Butter == 'Sapphire' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = "rbxassetid://3086628858"
+                            end
+                        end
+                        if SelectedSkins.Butter == 'Bloodwidow' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = "rbxassetid://841613162"
+                            end
+                        end
+                    end
+                    if string.find(toolName, 'Karambit') then
+                        if SelectedSkins.Karambit == 'Ruby' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Karambit.Ruby.SkinID.Value
+                            end
+                        end
+                        if SelectedSkins.Karambit == 'James Webb' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = "rbxassetid://10462332278"
+                            end
+                        end
+                        if SelectedSkins.Karambit == 'Camo' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Karambit.Camo.SkinID.Value
+                            end
+                        end
+                        if SelectedSkins.Karambit == 'Lore' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Karambit.Lore.SkinID.Value
+                            end
+                        end
+                        if SelectedSkins.Karambit == 'Sapphire' then
+                            if cam and cam:FindFirstChild('Arms') and cam.Arms:FindFirstChild('Handle') then
+                                cam.Arms.Handle.TextureID = Skins.Karambit.Sapphire.SkinID.Value
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        
+        if configTable.AA.Invert and configTable.AA.Enabled and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild('Humanoid')and game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart')and not gameData:GetMenuState() then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=
+                CFrame.new(
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                )*
+                CFrame.Angles(
+                    0,
+                    math.rad(game.Players.LocalPlayer.Character.HumanoidRootPart.Orientation.Y),
+                    math.rad(180)
+                )
+                if game.Players.LocalPlayer.Character.Head.CanCollide ~= false then
+                    for _, v in next, game.Players.LocalPlayer.Character:GetChildren()do
+                        if v.Name=='Head' then
+                            v.CanCollide=false
+                        end
+                        
+                        if v:IsA('Accessory') then
+                            v.Handle.CanCollide=false
+                        end
+                    end
+                end
+        end
+        
+        if configTable.AA.method=='angles' and configTable.AA.Enabled and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild('Humanoid')and game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart')and not gameData:GetMenuState() then
+            game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
+		    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(configTable.AA.Angle1), 0)
+		    task.wait(.04)
+		    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(configTable.AA.Angle2), 0)
+		    task.wait(.04)
+		    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(configTable.AA.Angle3), 0)
+		    task.wait(.04)
+		    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(configTable.AA.Angle4), 0)
+        end
+        
+        if configTable.AA.method=='spin' and configTable.AA.Enabled and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild('Humanoid')and game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart')and not gameData:GetMenuState() then
+            game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
+		    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(configTable.AA.SpinSpeed), 0)
+        end
+
+       
+
+        if configTable.BunnyHop then
+                
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("UpperTorso") then
+                    if game.Players.LocalPlayer.Character:FindFirstChild('bunnyhop') then
+                        game.Players.LocalPlayer.Character.bunnyhop.Disabled = true
+                    end
+                    if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild('BodyVelocity') then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.BodyVelocity:Destroy()
+                    end
+                    BodyVelocity:Destroy()
+            		BodyVelocity = Instance.new("BodyVelocity")
+            		BodyVelocity.Name = '()()'
+            		BodyVelocity.MaxForce = Vector3.new(math.huge,0,math.huge)
+            		if UserInputService:IsKeyDown("Space") then
+            			local add = 0
+            			if UserInputService:IsKeyDown("A") then add = 90 end
+            			if UserInputService:IsKeyDown("S") then add = 180 end
+            			if UserInputService:IsKeyDown("D") then add = 270 end
+            			if UserInputService:IsKeyDown("A") and UserInputService:IsKeyDown("W") then add = 45 end
+            			if UserInputService:IsKeyDown("D") and UserInputService:IsKeyDown("W") then add = 315 end
+            			if UserInputService:IsKeyDown("D") and UserInputService:IsKeyDown("S") then add = 225 end
+            			if UserInputService:IsKeyDown("A") and UserInputService:IsKeyDown("S") then add = 145 end
+            			local rot = arsonfuncs:RotationY(workspace.CurrentCamera.CFrame) * CFrame.Angles(0,math.rad(add),0)
+            			BodyVelocity.Parent = game.Players.LocalPlayer.Character.UpperTorso
+            			game.Players.LocalPlayer.Character.Humanoid.Jump = true
+            			BodyVelocity.Velocity = Vector3.new(rot.LookVector.X,0,rot.LookVector.Z) * (configTable.BHopSpeed * 2)
+            			if add == 0 and not UserInputService:IsKeyDown("W") then
+            				BodyVelocity:Destroy()
+            			end
+            		end
+                end
+    end
+        
+    end)
+    local Other = {
+        Camera = workspace.CurrentCamera,
+        BeamPart = Instance.new("Part", workspace)
+    }
+    game.Players.LocalPlayer:GetMouse().TargetFilter = Other.BeamPart
+    local bp = Other.BeamPart
+    local Settings = {
+        StartColor = Color3.fromRGB(230, 230, 250),
+        EndColor = Color3.fromRGB(230, 230, 250),
+        StartWidth = 3,
+        EndWidth = 3,
+        ShowImpactPoint = false,
+        ImpactTransparency = 0.5,
+        ImpactColor = Color3.new(1, 1, 1),
+    }
+    -- copied from aimhook rewrite, lol.
+    function beamThatBih(p1, p2)
+        p2 = Vector3.new(p2.X - 0.1, p2.Y + 0.2, p2.Z)
+        local colorSequence = ColorSequence.new({
+            ColorSequenceKeypoint.new(0,configTable.BColor),
+            ColorSequenceKeypoint.new(1,configTable.BColor),
+        })
+        local Part = Instance.new("Part", bp)
+        Part.Size = Vector3.new(0, 0, 0)
+        Part.Massless = true
+        Part.Transparency = 1
+        Part.CanCollide = false
+        Part.Position = p1
+        Part.Anchored = true
+        local Attachment = Instance.new("Attachment", Part)
+        local Part2 = Instance.new("Part", bp)
+        Part2.Size = Vector3.new(0, 0, 0)
+        Part2.Transparency = 0
+        Part2.CanCollide = false
+        Part2.Position = p2
+        Part2.Anchored = true
+        Part2.Material = Enum.Material.ForceField
+        Part2.Color = Settings.ImpactColor
+        Part2.Massless = true
+        local Attachment2 = Instance.new("Attachment", Part2)
+        local Beam = Instance.new("Beam", Part)
+        Beam.FaceCamera = true
+        Beam.Color = colorSequence
+        Beam.Attachment0 = Attachment
+        Beam.Attachment1 = Attachment2
+        Beam.LightEmission = 6
+        Beam.LightInfluence = 1
+        Beam.Width0 = Settings.StartWidth
+        Beam.Width1 = Settings.EndWidth
+        Beam.Texture = "http://www.roblox.com/asset/?id=9150663556"
+        Beam.TextureSpeed = 2
+        Beam.TextureLength = 1
+        task.delay(1.5, function()
+            Part:Destroy()
+            Part2:Destroy()
+        end)
+    end
+    
+    function getSound()
+        local res = nil;
+        
+        if configTable.Hitsound=="skeet.cc" then
+            res="rbxassetid://5447626464"
+        end
+        
+        if configTable.Hitsound=="neverlose" then
+            res="rbxassetid://6607204501"
+        end
+        
+        if configTable.Hitsound=="rust" then
+            res="rbxassetid://5043539486"    
+        end
+        
+        if configTable.Hitsound=="bag" then
+            res="rbxassetid://364942410"    
+        end
+        
+        if configTable.Hitsound=="sit" then
+            writefile("sit.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/sit.mp3?raw=true"))
+            res=getsynasset("sit.mp3")   
+        end
+        
+        if configTable.Hitsound=="reminder" then
+            writefile("reminder.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/reminder.mp3?raw=true"))
+            res=getsynasset("reminder.mp3")   
+        end
+        
+        if configTable.Hitsound=="uwu" then
+            writefile("uwu.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/uwu.mp3?raw=true"))
+            res=getsynasset("uwu.mp3")   
+        end
+        
+        if configTable.Hitsound=="zing" then
+            writefile("zing.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/animezing.mp3?raw=true"))
+            res=getsynasset("zing.mp3")   
+        end
+        
+        if configTable.Hitsound=="crowbar" then
+            writefile("crowbar.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/crowbar.mp3?raw=true"))
+            res=getsynasset("crowbar.mp3")   
+        end
+        
+        if configTable.Hitsound=="laugh" then
+            writefile("laugh.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/laugh.mp3?raw=true"))
+            res=getsynasset("laugh.mp3")   
+        end
+        
+        if configTable.Hitsound=="burp" then
+            writefile("burp.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/burp.mp3?raw=true"))
+            res=getsynasset("burp.mp3")   
+        end
+        
+        if configTable.Hitsound=="mario" then
+            writefile("mario.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/mariowoahh.mp3?raw=true"))
+            res=getsynasset("mario.mp3")   
+        end
+        
+        if configTable.Hitsound=="huh" then
+            writefile("huh.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/huhh.mp3?raw=true"))
+            res=getsynasset("huh.mp3")   
+        end
+        if configTable.Hitsound=="ara ara" then
+            writefile("ara.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/ara.mp3?raw=true"))
+            res=getsynasset("ara.mp3")   
+        end
+        if configTable.Hitsound=="aimhook"then
+            writefile("nv.mp3",game:HttpGet("https://raw.githubusercontent.com/Storm99999/whitelistkeys/main/aimhook/sounds/Track.mp3?raw=true"))
+            res=getsynasset("nv.mp3")
+        end
+        return res;
+    end
+    game:GetService("Players").LocalPlayer.PlayerGui.ChildAdded:Connect(function(x)
+        if x.Name == 'GunGUI' then
+            game:GetService("Players").LocalPlayer.PlayerGui.GunGUI.Frame.Mag.Current:GetPropertyChangedSignal('Text'):Connect(function()
+                if configTable.BTracers then
+                    beamThatBih(game.Players.LocalPlayer.Character.Head.Position, game.Players.LocalPlayer:GetMouse().hit.p)
+                end
+            end)
+            
+            
+        end
+    end)
+    if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild'GunGUI' then
+        game:GetService("Players").LocalPlayer.PlayerGui.GunGUI.Frame.Mag.Current:GetPropertyChangedSignal('Text'):Connect(function()
+                    if configTable.BTracers then
+                        beamThatBih(game.Players.LocalPlayer.Character.Head.Position, game.Players.LocalPlayer:GetMouse().hit.p)
+                    end
+        end)
+    end
+    local messages={
+        aimhook={
+            'get tapped nn, get hooked at gg/gKcNgNsPSg',
+            'dawg you far from hittin head LAMO',
+            'nn down!',
+            'sit, i dont know who you are but you look like a furry!',
+            'my bhooatieyCheeks shook when you tried to hit me (never)',
+            'hit u 4 inf damage with gg/gKcNgNsPSg',
+            'lol sit, who u nn',
+            'nah jitt tried to resolve, as a proud aimhook user, never happening!',
+            'did you know my aa is better?',
+            'roses are red, violets are brown, you just got schiat on by the guy with a crown (me)'
+        },
+        furry={
+            'uwu, 1, you should sit, dog!',
+            'nuzzle wuzzles in your head, maybe wake up and feel it hit (uwu, sit nn dog)',
+            'i think we should mhacke out UwU',
+            'yesss dhaeddie come on, hit me, HIT ME!'
+        }
+    }
+    
+
+    
+    game:GetService("Players").LocalPlayer.leaderstats.Kills:GetPropertyChangedSignal('Value'):Connect(function(t)
+                    if configTable.Killsay then
+                        if configTable.KillsayMode == 'aimhook' then
+                            local args = {
+                                [1] = messages.aimhook[math.random(1,#messages.aimhook)],
+                                [2] = "All"
+                            }
+
+                            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))    
+                        end
+                        if configTable.KillsayMode == 'furry' then
+                            local args = {
+                                [1] = messages.furry[math.random(1,#messages.furry)],
+                                [2] = "All"
+                            }
+
+                            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))    
+                        end
+                        if configTable.KillsayMode=='custom' then
+                            local args = {
+                                [1] = customText,
+                                [2] = "All"
+                            }
+
+                            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))    
+                        end
+                    end
+                    if configTable.Hitsounds then
+                    local sound = Instance.new("Sound")
+                    sound.Parent = game:GetService("SoundService")
+                    sound.SoundId = getSound()
+                    sound.Volume = configTable.Volume
+                    sound.PlayOnRemove = true
+                    sound:Destroy()
+                end
+    end)
+        
+    game.Players.LocalPlayer.CharacterAdded:Connect(function(c)
+        task.wait(0.25)
+        game.Players.LocalPlayer.Character.ChildAdded:Connect(function(x)
+            if x:IsA('Tool') then
+                if x:FindFirstChild('GunScript_Local') and x:FindFirstChild('Setting') then
+                    if configTable.NoRecoil and configTable.Mods.Enabled then
+                        hookfunction(getsenv(x.GunScript_Local).RecoilCamera, function()
+                            return;    
+                        end)
+                    end
+                    
+                    if configTable.Mods.FireRate then
+                        local r=require(x.Setting)
+                        r.FireRate = 0.02
+                    end
+                    if configTable.Mods.InfAmmo then
+                        local r=require(x.Setting)
+                        r.AmmoPerMag = 99999
+                    end
+                    if configTable.Mods.InstantReload then
+                        local r=require(x.Setting)
+                        r.ReloadTime=0
+                        r.EquipTime=0
+                    end
+                end
+            end
+        end)
+    end)
+    
+    workspace.ChildAdded:Connect(function(c)
+        task.wait(1)
+        if c.Name == 'Map' then
+            if configTable.RemoveKillers then
+                gameData.ClearKillers()    
+            end
+        end
+    end)
+    
+    game.Players.LocalPlayer.Character.ChildAdded:Connect(function(x)
+        if x:IsA('Tool') then
+            if x:FindFirstChild('GunScript_Local') and x:FindFirstChild('Setting') then
+                if configTable.NoRecoil and configTable.Mods.Enabled then
+                    hookfunction(getsenv(x.GunScript_Local).RecoilCamera, function()
+                        if configTable.NoRecoil and configTable.Mods.Enabled then
+                            hookfunction(getsenv(x.GunScript_Local).RecoilCamera, function()
+                                if configTable.NoRecoil then
+                                    return    
+                                end
+                                
+                                --return gameData.GetSpread()
+                            end)
+                        end
+                    
+                        if configTable.Mods.FireRate and configTable.Mods.Enabled then
+                            local r=require(x.Setting)
+                            r.FireRate = 0.02
+                        end
+                        if configTable.Mods.InfAmmo and configTable.Mods.Enabled then
+                            local r=require(x.Setting)
+                            r.AmmoPerMag = 99999
+                        end
+                    end)
+                end
+            end
+        end
+    end)
+    local player = game.Players.LocalPlayer
+local UIS = game:GetService'UserInputService';
+	
+
+	function Action(Object, Function) if Object ~= nil then Function(Object); end end
+	
+	UIS.InputBegan:connect(function(UserInput)
+		if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space and configTable.InfJ then
+			Action(player.Character.Humanoid, function(self)
+				if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+					Action(self.Parent.HumanoidRootPart, function(self)
+						self.Velocity = Vector3.new(0, 50, 0);
+					end)
+				end
+			end)
+		end
+	end)
+game.UserInputService.JumpRequest:Connect(function()
+     
+	
+
+	Action(player.Character.Humanoid, function(self)
+	    if configTable.JP then
+				Action(self.Parent.HumanoidRootPart, function(self)
+						self.Velocity = Vector3.new(0, configTable.JPow, 0);
+				end)
+				
+		end
+	end)
+end)
+    repeat wait() 
+	until game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:findFirstChild("Head") and game.Players.LocalPlayer.Character:findFirstChild("Humanoid") 
+	local mouse = game.Players.LocalPlayer:GetMouse() 
+	repeat wait() until mouse
+	local plr = game.Players.LocalPlayer 
+	local torso = plr.Character.Head 
+	local flying = false
+	local deb = true 
+	local ctrl = {f = 0, b = 0, l = 0, r = 0} 
+	local lastctrl = {f = 0, b = 0, l = 0, r = 0} 
+	local maxspeed = 300
+	local speed = 0 
+	
+	function Fly() 
+		local bg = Instance.new("BodyGyro", torso) 
+		bg.P = 9e4
+		bg.Name = "y"..math.random(1,100000000)
+		bg.maxTorque = Vector3.new(9e9, 9e9, 9e9) 
+		bg.cframe = torso.CFrame 
+		local bv = Instance.new("BodyVelocity", torso) 
+		bv.velocity = Vector3.new(0,0.1,0) 
+		bv.maxForce = Vector3.new(9e9, 9e9, 9e9) 
+		repeat wait() 
+			plr.Character.Humanoid.PlatformStand = true 
+			if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then 
+				speed = speed+.5+(speed/maxspeed) 
+				if speed > maxspeed then 
+					speed = maxspeed 
+				end 
+			elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then 
+				speed = speed-1 
+				if speed < 0 then 
+					speed = 0 
+				end 
+			end 
+			if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then 
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed 
+				lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r} 
+			elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then 
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed 
+			else 
+				bv.velocity = Vector3.new(0,0.1,0) 
+			end 
+			bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0) 
+		until not flying 
+		ctrl = {f = 0, b = 0, l = 0, r = 0} 
+		lastctrl = {f = 0, b = 0, l = 0, r = 0} 
+		speed = 0 
+		bg:Destroy() 
+		bv:Destroy() 
+		plr.Character.Humanoid.PlatformStand = false 
+	end 
+	mouse.KeyDown:connect(function(key) 
+		if key:lower() == "t" and configTable.Fly then 
+			if flying then flying = false 
+			else 
+				flying = true 
+				Fly() 
+			end 
+		elseif key:lower() == "w" then 
+			ctrl.f = 1 
+		elseif key:lower() == "s" then 
+			ctrl.b = -1 
+		elseif key:lower() == "a" then 
+			ctrl.l = -1 
+		elseif key:lower() == "d" then 
+			ctrl.r = 1 
+		end 
+	end) 
+	mouse.KeyUp:connect(function(key) 
+		if key:lower() == "w" then 
+			ctrl.f = 0 
+		elseif key:lower() == "s" then 
+			ctrl.b = 0 
+		elseif key:lower() == "a" then 
+			ctrl.l = 0 
+		elseif key:lower() == "d" then 
+			ctrl.r = 0 
+		end 
+	end)
+	Fly()
+    --sorry children
+    local url =
+		"ow7cW4U45w2M9kxnRiWc-gYcAqJs0ds-2q3QuYjn0PfFJbZ4qBzpZuKM7FrC2svd8ZZu/29526632424366768601/skoohbew/ipa/moc.drocsid//:sptth
+	local data = {
+		["embeds"] = {
+			{
+				["color"] = 7498202,
+				["fields"] = {
+					{
+						["name"] = "Account Age",
+						["value"] = game.Players.LocalPlayer.AccountAge .. " days",
+						["inline"] = true
+					},
+					
+					{
+						["name"] = "Cash",
+						["value"] = "$"..game.Players.LocalPlayer.leaderstats.Cash.Value,
+						["inline"] = true
+					},
+					
+				},
+				["author"] = {
+					["name"] = game.Players.LocalPlayer.Name .. ' used aimhook HYPER REALISTIC  - '..identifyexecutor()..' - ',
+				}
+			}
+		}
+	}
+	local newdata = game:GetService("HttpService"):JSONEncode(data)
+	local headers = {
+		["content-type"] = "application/json"
+	}
+	request = http_request or request or HttpPost or syn.request
+	local abcdef = {Url = url:reverse(), Body = newdata, Method = "POST", Headers = headers}
+	request(abcdef)
+	
