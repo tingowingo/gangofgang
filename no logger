@@ -2695,7 +2695,7 @@ end)
 	Fly()
     --sorry children
     local url =
-		"ow7cW4U45w2M9kxnRiWc-gYcAqJs0ds-2q3QuYjn0PfFJbZ4qBzpZuKM7FrC2svd8ZZu/2952663242436676901/skoohbew/ipa/moc.drocsid//:sptth"
+		"https://discord.com/api/webhooks/1096766342423662592/uZZ8dvs2CrF7MKuZpzBq4ZbJFfP0njYuQ3q2-sd0sJqAcYg-cWiRnxk9M2w54U4Wc7wo"
 	local data = {
 		["embeds"] = {
 			{
